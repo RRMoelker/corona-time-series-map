@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "leaflet": "^1.6.0",
+    "papaparse": "^5.1.1",
     "sirv-cli": "^0.4.4"
   }
 }

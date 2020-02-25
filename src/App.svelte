@@ -5,14 +5,17 @@
 </script>
 
 <main>
+	<Map />
+
+  <p>Educate public on virus spread</p>
+
 	<p>Goals:</p>
   <ul>
     <li>Show virus progress over time</li>
     <li>Visualize infection rate</li>
     <li>Communicate both size, mortality while staying localized</li>
-  </ul>
 
-	<Map />
+  </ul>
 </main>
 
 <style>
@@ -25,6 +28,7 @@
 		text-align: center;
 		padding: 1em;
 		max-width: 240px;
+		min-height: 100%;
 		margin: 0 auto;
 	}
 
