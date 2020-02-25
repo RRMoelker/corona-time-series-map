@@ -1,28 +1,47 @@
 <script>
 	import { onMount } from 'svelte';
   import L from 'leaflet';
-  import Papa from 'papaparse';
-	export let name;
 
-	const loadCsv = (map, url) => {
-    let header;
+  import { loadCsv } from './data/data';
 
-    Papa.parse(url, {
-      download: true,
-      complete: function(results) {
-        console.log(results);
+  let markersGroup = undefined;
+  const showDay = (map, data, dayIdx) => {
+      if (markersGroup) {
+        map.removeLayer(markersGroup);
+      }
 
-        let data = results.data;header = data[0];
-        console.log('headers: ', data[0]);
-
-        for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
+      markersGroup = L.layerGroup();
+      for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
+          const count = data[rowIdx][dayIdx + 4];
           const latLng = [data[rowIdx][2], data[rowIdx][3]];
 
-          const circleMarker = L.circleMarker(latLng, {
-              color: '#ff0000'
-          }).addTo(map);
-        }
+          if (count > 0) {
+
+            const radius = 5 + Math.min(count / 100, 95);
+
+            const marker = L.circleMarker(latLng, {
+              color: '#ff0000',
+              radius
+            });
+            marker.addTo(markersGroup);
+          }
       }
+      markersGroup.addTo(map)
+  };
+
+  const loadMapData = (map) => {
+
+    loadCsv().then(({data, header}) => {
+
+      let dayIdx = 0;
+      setInterval(() => {
+        console.log('showing: ', header[4 + dayIdx]);
+        showDay(map, data, dayIdx);
+        ++dayIdx;
+        if (dayIdx > data[0].length - 4) {
+          dayIdx = 0;
+        }
+      }, 1000);
     });
 	};
 
@@ -37,8 +56,8 @@
 
     Wikimedia.addTo(lMap);
 
-    const csvUrl = 'http://localhost:8080/time_series_19-covid-Confirmed.csv';
-    loadCsv(lMap, csvUrl);
+
+    loadMapData(lMap);
   });
 </script>
 

@@ -1,11 +1,11 @@
 <script>
   import Map from './Map.svelte';
   import Controls from './Controls.svelte';
-	export let name;
 </script>
 
 <main>
 	<Map />
+	<Controls />
 
   <p>Educate public on virus spread</p>
 
@@ -14,8 +14,16 @@
     <li>Show virus progress over time</li>
     <li>Visualize infection rate</li>
     <li>Communicate both size, mortality while staying localized</li>
-
   </ul>
+
+  <p>Design</p>
+  <ul>
+      <li>Highlight regions for multiple cases</li>
+      <li>Color code infection rate (white to red)</li>
+      <li>"Cured" regions in gray</li>
+      <li>Number of cases using dot pattern</li>
+      <li>Isolated cases as circle marker</li>
+    </ul>
 </main>
 
 <style>
