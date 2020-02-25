@@ -1,6 +1,6 @@
 <script>
   import Map from './Map.svelte';
-
+  import Controls from './Controls.svelte';
 	export let name;
 </script>
 

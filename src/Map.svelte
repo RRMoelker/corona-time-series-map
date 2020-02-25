@@ -13,7 +13,7 @@
         console.log(results);
 
         let data = results.data;header = data[0];
-        console.log(data[1]);
+        console.log('headers: ', data[0]);
 
         for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
           const latLng = [data[rowIdx][2], data[rowIdx][3]];
