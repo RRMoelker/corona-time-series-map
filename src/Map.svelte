@@ -1,44 +1,56 @@
 <script>
 	import { onMount } from 'svelte';
   import L from 'leaflet';
+  import DataTable from './DataTable.svelte';
 
   import { loadCsv } from './data/data';
 
+  let data;
   let markersGroup = undefined;
-  const showDay = (map, data, dayIdx) => {
+  let a = 2;
+
+  const showDay = (map, sites, dayIdx) => {
       if (markersGroup) {
         map.removeLayer(markersGroup);
       }
 
       markersGroup = L.layerGroup();
-      for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
-          const count = data[rowIdx][dayIdx + 4];
-          const latLng = [data[rowIdx][2], data[rowIdx][3]];
+      for (const site of sites) {
+        // const site = sites[rowIdx];
+        const count = site.count[dayIdx];
+        const latLng = [site.lat, site.lng];
 
-          if (count > 0) {
+        if (count > 0) {
+          const radius = 5 + Math.min(count / 100, 95) * 1000;
 
-            const radius = 5 + Math.min(count / 100, 95);
+          // const marker = L.circleMarker(latLng, {
+          //   color: '#ff0000',
+          //   radius
+          // });
 
-            const marker = L.circleMarker(latLng, {
-              color: '#ff0000',
-              radius
-            });
-            marker.addTo(markersGroup);
-          }
+          const marker = L.circle(latLng, {
+            color: '#ff0000',
+            radius // Radius of the circle in meters.
+          });
+
+          marker.addTo(markersGroup);
+        }
       }
       markersGroup.addTo(map)
   };
 
   const loadMapData = (map) => {
 
-    loadCsv().then(({data, header}) => {
+    loadCsv().then(result => {
+      data = result;
+      const { fullHeader, dayHeader, sites } = result;
 
       let dayIdx = 0;
       setInterval(() => {
-        console.log('showing: ', header[4 + dayIdx]);
-        showDay(map, data, dayIdx);
+        console.log('showing: ', dayHeader[dayIdx]);
+        showDay(map, sites, dayIdx);
         ++dayIdx;
-        if (dayIdx > data[0].length - 4) {
+        if (dayIdx > dayHeader.length) {
           dayIdx = 0;
         }
       }, 1000);
@@ -48,14 +60,16 @@
 	onMount(async () => {
     const lMap = L.map('map').setView([0, 0], 3);
 
-    const Wikimedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
+    const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
     	attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
     	minZoom: 1,
     	maxZoom: 19
     });
 
-    Wikimedia.addTo(lMap);
+    wikimediaLayer.addTo(lMap);
 
+    // add a scale to map (left bottom corner scale)
+    L.control.scale().addTo(lMap);
 
     loadMapData(lMap);
   });
@@ -68,5 +82,8 @@
     height: 100%;
   }
 </style>
+
+
+<DataTable data={data} />
 
 <div id="map"></div>

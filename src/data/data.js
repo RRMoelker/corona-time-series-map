@@ -3,6 +3,15 @@ import Papa from 'papaparse';
 
 let cache = undefined;
 
+const calculateDerivative = (list) => {
+  //calculated using backward difference
+  const difference = [0];
+  for (let i = 1; i < list.length; ++i) {
+    difference[i] = list[i]  - list[i - 1];
+  }
+  return difference;
+};
+
 export const loadCsv = () => {
   // get data from all sources
   // aggregate
@@ -34,15 +43,36 @@ export const loadCsv = () => {
         console.log('remoteHeader: ', remoteHeader);
 
         const data = remoteData;
-        const header = remoteHeader;
+        const fullHeader = remoteHeader;
 
-        const result = {
-          data,
-          header
+        // const result = {
+        //   data,
+        //   header: fullHeader
+        // };
+
+        const result2 = {
+          fullHeader,
+          sites: [],
+          dayHeader: fullHeader.slice(4),
         };
-        cache = result;
 
-        resolve(result);
+        for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
+          const row = data[rowIdx];
+          const count = row.slice(4);
+
+          result2.sites.push({
+            province: row[0],
+            region: row[1],
+            lat: row[2],
+            lng: row[3],
+            count: count,
+            derivative: calculateDerivative(count),
+          })
+        }
+
+        cache = result2;
+
+        resolve(result2);
       }
     });
   });
