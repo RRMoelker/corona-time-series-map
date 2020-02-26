@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
   import L from 'leaflet';
   import DataTable from './DataTable.svelte';
+  import { spreadColor } from './levels';
 
   import { loadCsv } from './data/data';
 
@@ -18,18 +19,31 @@
       for (const site of sites) {
         // const site = sites[rowIdx];
         const count = site.count[dayIdx];
+        const derivate = site.derivative[dayIdx];
         const latLng = [site.lat, site.lng];
 
         if (count > 0) {
-          const radius = 5 + Math.min(count / 100, 95) * 1000;
+          const radius = 5 + Math.min(count / 100, 95) * 5000;
 
           // const marker = L.circleMarker(latLng, {
           //   color: '#ff0000',
           //   radius
           // });
 
+          let color;
+          if (derivate == 0) {
+            color = spreadColor.stagnant;
+          } else if (derivate <= 5) {
+            color = spreadColor.low;
+          } else if (derivate <= 50) {
+            color = spreadColor.medium;
+          } else {
+            color = spreadColor.high;
+          }
+
           const marker = L.circle(latLng, {
-            color: '#ff0000',
+            // color: '#ff0000',
+            color,
             radius // Radius of the circle in meters.
           });
 
@@ -83,7 +97,6 @@
   }
 </style>
 
+<div id="map"></div>
 
 <DataTable data={data} />
-
-<div id="map"></div>
