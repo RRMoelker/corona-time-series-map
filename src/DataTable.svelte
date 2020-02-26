@@ -36,16 +36,24 @@
         </tr>
 
         <tr>
-            <td>{site.province}</td>
-            <td>{site.region}</td>
-            <!--<td>{site.lat}</td>-->
-            <!--<td>{site.lng}</td>-->
-            <td>f'</td>
+          <td></td>
+          <td></td>
+          <td>f'</td>
 
-            {#each site.derivative as derivative}
-            <td class="{derivative == 0 ? 'green': ''}">{derivative}</td>
-            {/each}
-          </tr>
+          {#each site.derivative as derivative}
+          <td class="{derivative == 0 ? 'green': ''}">{derivative}</td>
+          {/each}
+        </tr>
+
+        <tr>
+          <td></td>
+          <td></td>
+          <td>f' average</td>
+
+          {#each site.derivativeA as derivative}
+          <td class="{derivative == 0 ? 'green': ''}">{derivative}</td>
+          {/each}
+        </tr>
       {/each}
 
     </tbody>

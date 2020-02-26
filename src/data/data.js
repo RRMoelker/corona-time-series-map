@@ -1,21 +1,56 @@
-
 import Papa from 'papaparse';
 
 let cache = undefined;
 
-const calculateDerivative = (list) => {
-  //calculated using backward difference
-  const difference = [0];
+/**
+ * Compute number of active days in array.
+ * @param list
+ */
+const computeActive = list => {
+  const active = [];
+  for (let i = 0; i < list.length; ++i) {
+    if (list[i] > 0) {
+      active[i] = (i > 0 ? active[i-1] : 0) + 1;
+    }
+  }
+  return active;
+};
+
+/**
+ * calculated using backward difference
+ * @param list
+ * @returns {*[]}
+ */
+const calculateDerivative = list => {
+  const difference = [list[0]];
   for (let i = 1; i < list.length; ++i) {
     difference[i] = list[i]  - list[i - 1];
   }
   return difference;
 };
 
-export const loadCsv = () => {
-  // get data from all sources
-  // aggregate
+/**
+ * Averaging function
+ * @param list of numbers
+ * @param exp exponent, between 0 and 1
+ */
+const exponentialWeightedAverages = (list, exp) => {
+  const inv = 1.0 - exp;
+  const window = 1 / inv; // practical average window
 
+  const average = [list[0]];
+  for (let i = 1; i < list.length; ++i) {
+    average[i] = exp * average[i - 1] + inv * list[i];
+    average[i] = Number(average[i]).toFixed(2)
+  }
+  return average;
+};
+
+/**
+ * Get data from all sources and aggregate
+ * @returns {Promise<any>}
+ */
+export const loadCsv = () => {
   const url = 'http://localhost:8080/time_series_19-covid-Confirmed.csv';
 
   const promise = new Promise((resolve, reject) => {
@@ -27,8 +62,6 @@ export const loadCsv = () => {
     Papa.parse(url, {
       download: true,
       complete: function(results) {
-        console.log(results);
-
         const remoteData = results.data;
 
         /**
@@ -40,17 +73,11 @@ export const loadCsv = () => {
          * 4..: counts per day
          */
         const remoteHeader = remoteData[0];
-        console.log('remoteHeader: ', remoteHeader);
 
         const data = remoteData;
         const fullHeader = remoteHeader;
 
-        // const result = {
-        //   data,
-        //   header: fullHeader
-        // };
-
-        const result2 = {
+        const result = {
           fullHeader,
           sites: [],
           dayHeader: fullHeader.slice(4),
@@ -59,20 +86,22 @@ export const loadCsv = () => {
         for (let rowIdx = 1; rowIdx < data.length; ++rowIdx) {
           const row = data[rowIdx];
           const count = row.slice(4);
-
-          result2.sites.push({
+          const derivative = calculateDerivative(count);
+          result.sites.push({
             province: row[0],
             region: row[1],
             lat: row[2],
             lng: row[3],
             count: count,
-            derivative: calculateDerivative(count),
-          })
+            derivative,
+            derivativeA: exponentialWeightedAverages(derivative, 0.1),
+            active: computeActive(count),
+          });
         }
 
-        cache = result2;
+        cache = result;
 
-        resolve(result2);
+        resolve(result);
       }
     });
   });

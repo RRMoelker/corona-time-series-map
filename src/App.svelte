@@ -1,11 +1,25 @@
 <script>
+  import { loadCsv } from './data/data';
   import Map from './Map.svelte';
   import Controls from './Controls.svelte';
+  import DataTable from './DataTable.svelte';
+  import { dayIdx } from './store';
+
+  let data;
+  let dayStrings;
+  loadCsv().then(result => {
+      data = result;
+
+      const { dayHeader, sites } = result;
+      dayStrings = dayHeader;
+    });
 </script>
 
 <main>
-	<Map />
-	<Controls />
+	<Map sites={data && data.sites} />
+	<Controls dayStrings={dayStrings} />
+
+  <DataTable data={data} />
 
   <p>Educate public on virus spread</p>
 

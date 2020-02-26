@@ -1,13 +1,13 @@
 export const spreadLevels = { // equal or less than x per day
-  'no': 0,
+  'stagnant': 0,
   'low': 5,
   'medium': 50,
-  'high': 500,
+  'high': Number.MAX_SAFE_INTEGER,
 };
 
 export const spreadColor = {
-  'stagnant': '#c8c8cf', // gray,
-  'low': '#ffbb00',
-  'medium': '#ff6000',
-  'high': '#ff0041',
+  'stagnant': '#0099cf',
+  'low': '#ff9100',
+  'medium': '#ff1e00',
+  'high': '#ac001a',
 };

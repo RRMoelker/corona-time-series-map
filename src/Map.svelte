@@ -1,102 +1,85 @@
 <script>
 	import { onMount } from 'svelte';
   import L from 'leaflet';
-  import DataTable from './DataTable.svelte';
-  import { spreadColor } from './levels';
+  import { spreadLevels, spreadColor } from './levels';
+  import { dayIdx } from './store';
 
-  import { loadCsv } from './data/data';
+  import {computeCircleRadius} from "./map/calculations";
 
-  let data;
+  export let sites;
   let markersGroup = undefined;
-  let a = 2;
+  let map;
 
-  const showDay = (map, sites, dayIdx) => {
-      if (markersGroup) {
-        map.removeLayer(markersGroup);
-      }
+  const mapCenter = [30, 60]; // between Europe and Asia it bit more on the northern hemisphere.
 
-      markersGroup = L.layerGroup();
-      for (const site of sites) {
-        // const site = sites[rowIdx];
-        const count = site.count[dayIdx];
-        const derivate = site.derivative[dayIdx];
-        const latLng = [site.lat, site.lng];
+  const showDay = (dayIdx) => {
+    if(!sites) {
+      console.warn('no data to display on map');
+      return;
+    }
 
-        if (count > 0) {
-          const radius = 5 + Math.min(count / 100, 95) * 5000;
+    if (markersGroup) {
+      map.removeLayer(markersGroup);
+    }
 
-          // const marker = L.circleMarker(latLng, {
-          //   color: '#ff0000',
-          //   radius
-          // });
+    markersGroup = L.layerGroup();
+    for (const site of sites) {
+      const count = site.count[dayIdx];
+      const derivativeA = site.derivativeA[dayIdx];
+      const latLng = [site.lat, site.lng];
 
-          let color;
-          if (derivate == 0) {
-            color = spreadColor.stagnant;
-          } else if (derivate <= 5) {
-            color = spreadColor.low;
-          } else if (derivate <= 50) {
-            color = spreadColor.medium;
-          } else {
-            color = spreadColor.high;
-          }
+      if (count > 0) {
+        const radius = computeCircleRadius(count);
 
-          const marker = L.circle(latLng, {
-            // color: '#ff0000',
-            color,
-            radius // Radius of the circle in meters.
-          });
-
-          marker.addTo(markersGroup);
+        let color;
+        if (derivativeA == spreadLevels.stagnant) {
+          color = spreadColor.stagnant;
+        } else if (derivativeA <= spreadLevels.low) {
+          color = spreadColor.low;
+        } else if (derivativeA <= spreadLevels.medium) {
+          color = spreadColor.medium;
+        } else {
+          color = spreadColor.high;
         }
+
+        const marker = L.circle(latLng, {
+          color,
+          radius // Radius of the circle in meters.
+        });
+
+        marker.addTo(markersGroup);
       }
-      markersGroup.addTo(map)
+    }
+    markersGroup.addTo(map)
   };
 
-  const loadMapData = (map) => {
-
-    loadCsv().then(result => {
-      data = result;
-      const { fullHeader, dayHeader, sites } = result;
-
-      let dayIdx = 0;
-      setInterval(() => {
-        console.log('showing: ', dayHeader[dayIdx]);
-        showDay(map, sites, dayIdx);
-        ++dayIdx;
-        if (dayIdx > dayHeader.length) {
-          dayIdx = 0;
-        }
-      }, 1000);
-    });
-	};
-
 	onMount(async () => {
-    const lMap = L.map('map').setView([0, 0], 3);
+    map = L.map('map').setView(mapCenter, 3);
 
     const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
     	attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
-    	minZoom: 1,
+    	minZoom: 1.5,
     	maxZoom: 19
     });
 
-    wikimediaLayer.addTo(lMap);
+    wikimediaLayer.addTo(map);
 
     // add a scale to map (left bottom corner scale)
-    L.control.scale().addTo(lMap);
+    L.control.scale().addTo(map);
 
-    loadMapData(lMap);
   });
+
+  // listen to changes on dayIdx
+  $: showDay($dayIdx);
 </script>
 
 <style>
   #map {
     width: 100%;
-    min-height: 600px;
+    min-height: 800px;
     height: 100%;
   }
 </style>
 
 <div id="map"></div>
 
-<DataTable data={data} />

@@ -19,6 +19,7 @@
   "dependencies": {
     "@smui/common": "^1.0.0-beta.20",
     "@smui/slider": "^1.0.0-beta.20",
+    "js-easing-functions": "^1.0.3",
     "leaflet": "^1.6.0",
     "node-sass": "^4.13.1",
     "papaparse": "^5.1.1",

@@ -1,6 +1,5 @@
 Basic web application to visualize Corona virus spread over time.
 
-
 ## Running app
 
 Install the dependencies.
