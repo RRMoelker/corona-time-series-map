@@ -6,7 +6,7 @@ export const spreadLevels = { // equal or less than x per day
 };
 
 export const spreadColor = {
-  'stagnant': '#0099cf',
+  'stagnant': '#4c4f46',
   'low': '#ff9100',
   'medium': '#ff1e00',
   'high': '#ac001a',

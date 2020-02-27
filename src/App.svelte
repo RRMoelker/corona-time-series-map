@@ -27,17 +27,9 @@
   <ul>
     <li>Show virus progress over time</li>
     <li>Visualize infection rate</li>
-    <li>Communicate both size, mortality while staying localized</li>
+    <li>Communicate both size and infection rate</li>
+    <li>Try to reflect infected area as best as possible (no highlighting of entire countries)</li>
   </ul>
-
-  <p>Design</p>
-  <ul>
-      <li>Highlight regions for multiple cases</li>
-      <li>Color code infection rate (white to red)</li>
-      <li>"Cured" regions in gray</li>
-      <li>Number of cases using dot pattern</li>
-      <li>Isolated cases as circle marker</li>
-    </ul>
 </main>
 
 <style>

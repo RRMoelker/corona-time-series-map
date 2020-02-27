@@ -36,7 +36,7 @@ const calculateDerivative = list => {
  */
 const exponentialWeightedAverages = (list, exp) => {
   const inv = 1.0 - exp;
-  const window = 1 / inv; // practical average window
+  // const window = 1 / inv; // approximation of practical average window
 
   const average = [list[0]];
   for (let i = 1; i < list.length; ++i) {
@@ -51,7 +51,7 @@ const exponentialWeightedAverages = (list, exp) => {
  * @returns {Promise<any>}
  */
 export const loadCsv = () => {
-  const url = 'http://localhost:8080/time_series_19-covid-Confirmed.csv';
+  const url = 'http://localhost:8081/time_series_19-covid-Confirmed.csv';
 
   const promise = new Promise((resolve, reject) => {
     if (cache) {
@@ -61,6 +61,11 @@ export const loadCsv = () => {
 
     Papa.parse(url, {
       download: true,
+      error: function(err, file, inputElem, reason) {
+        const message = 'error csv downloader&parser: ' + reason;
+        console.error(message);
+        reject(message);
+      },
       complete: function(results) {
         const remoteData = results.data;
 

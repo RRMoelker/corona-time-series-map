@@ -1,6 +1,5 @@
 <script>
   export let data;
-
   // const { fullHeader, dayHeader, sites } = data;
 
   let showDerivative = true;

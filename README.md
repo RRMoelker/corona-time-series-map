@@ -1,5 +1,20 @@
 Basic web application to visualize Corona virus spread over time.
 
+
+# Design concept
+  
+* Highlight regions for multiple cases
+* Color code infection rate (white to red
+* Cured" regions in gray
+* Number of cases using dot pattern
+* Isolated cases as circle marker
+
+# Data
+
+[Novel Coronavirus (COVID-19) Cases](https://github.com/CSSEGISandData/COVID-19) by JHU CSSE.
+
+Specifically: `csse_covid_19_data/csse_covid_19_time_series/`
+
 ## Running app
 
 Install the dependencies.

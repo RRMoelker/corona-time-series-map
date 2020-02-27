@@ -1,30 +1,49 @@
 <script>
-  // import Button from '@smui/button';
-  // import Slider from '@smui/slider';
+  import Button from '@smui/button';
+  import {Label, Icon} from '@smui/common';
+  import FormField from '@smui/form-field';
+  import Checkbox from '@smui/checkbox';
+  import IconButton from '@smui/icon-button';
+  import Textfield from '@smui/textfield';
+  import Slider from '@smui/slider';
   import { dayIdx } from './store';
 
   const timeStep = 1000; // ms
-  const loop = true;
+  let loop = false;
   let isRunning = false;
   let interval;
 
   export let dayStrings = [];
   let day = '';
 
+  $: numberOfDays = dayStrings && dayStrings.length || 0;
+  $: numberOfDays0 = Math.max(numberOfDays - 1, 0);
+
   const updateDay = (newIndex) => {
     day = dayStrings[newIndex];
   };
 
-  const onTimer = () => {
+  const dayNext = () => {
     ++$dayIdx;
-    if ($dayIdx > dayStrings.length - 1) {
+    if ($dayIdx > numberOfDays0) {
       if (loop) {
         $dayIdx = 0;
       } else {
-        $dayIdx = dayStrings.length - 1;
+        $dayIdx = numberOfDays0;
         stopTimer()
       }
     }
+  };
+
+  const dayPrev = () => {
+      --$dayIdx;
+      if ($dayIdx < 0) {
+        $dayIdx = 0;
+      }
+  };
+
+  const onTimer = () => {
+    dayNext();
   };
 
   const startTimer = () => {
@@ -58,19 +77,38 @@
 
 
 <div class="container">
-  <input type=number bind:value={$dayIdx} min=0 max={dayStrings.length - 1}>
-  <span>{day}</span>
-  <input type=range bind:value={$dayIdx} min=0 max={dayStrings.length - 1}>
-  <button on:click={toggleTimer}>{ isRunning ? 'pause' : 'play' }</button>
-  <button on:click={reset}>restart</button>
+  {#if numberOfDays > 0}
+    <Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={numberOfDays0}/>
+
+    <div class="day-slider">
+      <Slider bind:value={$dayIdx} min={0} max={numberOfDays0} step={1} discrete displayMarkers />
+    </div>
+
+    <IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton>
+    <IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton>
+
+
+    <span>{day}</span>
+
+    <!--<input type=range bind:value={$dayIdx} on:change={stopTimer} min=0 max={numberOfDays0}>-->
+
+    <Button on:click={toggleTimer} variant="unelevated" color="secondary">
+      <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><Label>{ isRunning ? 'pause' : 'play' }</Label>
+    </Button>
+    <Button on:click={reset} disabled={$dayIdx == 0}  variant="unelevated" color="secondary">
+      <Icon class="material-icons">replay</Icon><Label>restart</Label>
+    </Button>
+
+    <FormField>
+      <Checkbox bind:checked={loop} />
+      <span>Loop</span>
+    </FormField>
+  {/if}
 </div>
 
-
-<!--<Button>Just a Button</Button>-->
-<!--<Slider bind:value={value3} min={-10} max={10} step={2} discrete displayMarkers />-->
-
 <style>
- button {
-  min-width: 8em;
- }
+.day-slider {
+  display: inline-block;
+  width: 30%;
+}
 </style>
