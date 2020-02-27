@@ -6,30 +6,20 @@
   import IconButton from '@smui/icon-button';
   import Textfield from '@smui/textfield';
   import Slider from '@smui/slider';
-  import { dayIdx } from './store';
+  import { day, dayIdx, dayHeader, numberOfDays, numberOfDays0 } from '../store';
 
   const timeStep = 1000; // ms
   let loop = false;
   let isRunning = false;
   let interval;
 
-  export let dayStrings = [];
-  let day = '';
-
-  $: numberOfDays = dayStrings && dayStrings.length || 0;
-  $: numberOfDays0 = Math.max(numberOfDays - 1, 0);
-
-  const updateDay = (newIndex) => {
-    day = dayStrings[newIndex];
-  };
-
   const dayNext = () => {
     ++$dayIdx;
-    if ($dayIdx > numberOfDays0) {
+    if ($dayIdx > $numberOfDays0) {
       if (loop) {
         $dayIdx = 0;
       } else {
-        $dayIdx = numberOfDays0;
+        $dayIdx = $numberOfDays0;
         stopTimer()
       }
     }
@@ -71,26 +61,23 @@
   };
 
   startTimer();
-
-  $: updateDay($dayIdx);
 </script>
 
 
 <div class="container">
-  {#if numberOfDays > 0}
-    <Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={numberOfDays0}/>
+  {#if $numberOfDays > 0}
+    <Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>
 
     <div class="day-slider">
-      <Slider bind:value={$dayIdx} min={0} max={numberOfDays0} step={1} discrete displayMarkers />
+      <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
     </div>
 
     <IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton>
     <IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton>
 
+    <span>{$day}</span>
 
-    <span>{day}</span>
-
-    <!--<input type=range bind:value={$dayIdx} on:change={stopTimer} min=0 max={numberOfDays0}>-->
+    <!--<input type=range bind:value={$dayIdx} on:change={stopTimer} min=0 max={$numberOfDays0}>-->
 
     <Button on:click={toggleTimer} variant="unelevated" color="secondary">
       <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><Label>{ isRunning ? 'pause' : 'play' }</Label>

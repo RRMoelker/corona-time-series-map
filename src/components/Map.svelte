@@ -1,18 +1,21 @@
 <script>
 	import { onMount } from 'svelte';
   import L from 'leaflet';
-  import { spreadLevels, spreadColor } from './levels';
-  import { dayIdx } from './store';
+  import { spreadLevels, spreadColor } from '../levels';
+  import { dayIdx, sites } from '../store';
 
-  import {computeCircleRadius} from "./map/calculations";
+  import {computeCircleRadius} from '../map/calculations';
 
-  export let sites;
   let markersGroup = undefined;
   let map;
 
   const mapCenter = [30, 60]; // between Europe and Asia it bit more on the northern hemisphere.
 
-  const showDay = (dayIdx) => {
+  const showDay = (sites, dayIdx) => {
+    if(!map) {
+      console.warn('leaflet map not yet initialised');
+      return;
+    }
     if(!sites) {
       console.warn('no data to display on map');
       return;
@@ -66,11 +69,10 @@
 
     // add a scale to map (left bottom corner scale)
     L.control.scale().addTo(map);
-
   });
 
   // listen to changes on dayIdx
-  $: showDay($dayIdx);
+  $: showDay($sites, $dayIdx);
 </script>
 
 <style>

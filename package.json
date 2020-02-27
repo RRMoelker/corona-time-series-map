@@ -4,7 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public"
+    "start": "sirv public --single",
+    "start:dev": "sirv public --single --dev"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
@@ -28,6 +29,7 @@
     "node-sass": "^4.13.1",
     "papaparse": "^5.1.1",
     "rollup-plugin-postcss": "^2.1.1",
-    "sirv-cli": "^0.4.4"
+    "sirv-cli": "^0.4.4",
+    "svelte-routing": "^1.4.0"
   }
 }

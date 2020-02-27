@@ -1,6 +1,6 @@
 <script>
-  export let data;
-  // const { fullHeader, dayHeader, sites } = data;
+  export let dayHeader;
+  export let sites;
 
   let showDerivative = true;
   let showDeaths = false;
@@ -8,20 +8,20 @@
 </script>
 
 <div class="container">
-  {#if data}
+  {#if sites}
   <table>
     <thead>
       <tr>
       <th>Province/State</th>
       <th>Country/Region</th>
       <th>Type</th>
-      {#each data.dayHeader as header}
+      {#each dayHeader as header}
         <th>{header}</th>
       {/each}
       </tr>
     </thead>
     <tbody>
-      {#each data.sites as site}
+      {#each sites as site}
         <tr>
           <td>{site.province}</td>
           <td>{site.region}</td>
