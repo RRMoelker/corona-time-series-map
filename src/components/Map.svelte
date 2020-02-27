@@ -57,7 +57,14 @@
   };
 
 	onMount(async () => {
-    map = L.map('map').setView(mapCenter, 3);
+	  const  southWest = L.latLng(-90, -99999);
+    const northEast = L.latLng(90, 999999);
+    const bounds = L.latLngBounds(southWest, northEast);
+
+    map = L.map('map', {
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0
+    }).setView(mapCenter, 3);
 
     const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
     	attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',

@@ -1,14 +1,17 @@
 <script>
-  import { dayHeader, sites } from '../store';
   import DataTable from '../components/DataTable.svelte';
+  import Header from '../components/Header.svelte';
+  import { dayHeader, sites } from '../store';
 </script>
 
-<h1>Dataset</h1>
+<Header title="Dataset behind the map"></Header>
 
-<p>
-Data source from <a href="https://github.com/CSSEGISandData/COVID-19">Novel Coronavirus (COVID-19) Cases</a> by JHU CSSE.
+<div class="page-container">
+  <p>
+  Data source from <a href="https://github.com/CSSEGISandData/COVID-19">Novel Coronavirus (COVID-19) Cases</a> by JHU CSSE.
 
-Overview of data from source enriched (averaged) derivated.
-</p>
+  Overview of data from source enriched (averaged) derivated.
+  </p>
 
-<DataTable dayHeader={$dayHeader} sites={$sites} />
+  <DataTable dayHeader={$dayHeader} sites={$sites} />
+</div>

@@ -6,7 +6,7 @@
   import IconButton from '@smui/icon-button';
   import Textfield from '@smui/textfield';
   import Slider from '@smui/slider';
-  import { day, dayIdx, dayHeader, numberOfDays, numberOfDays0 } from '../store';
+  import { day, dayIdx, numberOfDays, numberOfDays0 } from '../store';
 
   const timeStep = 1000; // ms
   let loop = false;

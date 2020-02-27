@@ -14,15 +14,31 @@
   });
 </script>
 
-<Router url="{url}">
-  <nav>
-    <Link to="/">Home</Link>
-    <Link to="dataset">Dataset</Link>
-    <Link to="about">About</Link>
-  </nav>
-  <div>
-    <Route path="dataset" component="{DatasetPage}" />
-    <Route path="about" component="{AboutPage}" />
-    <Route path="/"><HomePage /></Route>
-  </div>
-</Router>
+<main>
+  <Router url="{url}">
+    <div>
+      <Route path="dataset" component="{DatasetPage}" />
+      <Route path="about" component="{AboutPage}" />
+      <Route path="/"><HomePage /></Route>
+    </div>
+  </Router>
+  <footer>
+    <div>See about page for more info.</div>
+  </footer>
+</main>
+
+<style>
+  :global(html, body) {
+    height: 100%;
+    margin: 0;
+  }
+  :global(.page-container) {
+    padding: 0 1rem;
+  }
+  footer {
+    background-color: lightgray;
+  }
+  footer div {
+    text-align: right;
+  }
+</style>
