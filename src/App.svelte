@@ -14,18 +14,11 @@
   });
 </script>
 
-<main>
-  <Router url="{url}">
-    <div>
-      <Route path="dataset" component="{DatasetPage}" />
-      <Route path="about" component="{AboutPage}" />
-      <Route path="/"><HomePage /></Route>
-    </div>
-  </Router>
-  <footer>
-    <div>See about page for more info.</div>
-  </footer>
-</main>
+<Router url="{url}">
+  <Route path="dataset" component="{DatasetPage}" />
+  <Route path="about" component="{AboutPage}" />
+  <Route path="/"><HomePage /></Route>
+</Router>
 
 <style>
   :global(html, body) {
@@ -34,11 +27,5 @@
   }
   :global(.page-container) {
     padding: 0 1rem;
-  }
-  footer {
-    background-color: lightgray;
-  }
-  footer div {
-    text-align: right;
   }
 </style>

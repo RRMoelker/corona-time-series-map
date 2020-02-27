@@ -6,7 +6,7 @@
 
 <Header title="Dataset behind the map"></Header>
 
-<div class="page-container">
+<main class="page-container">
   <p>
   Data source from <a href="https://github.com/CSSEGISandData/COVID-19">Novel Coronavirus (COVID-19) Cases</a> by JHU CSSE.
 
@@ -14,4 +14,4 @@
   </p>
 
   <DataTable dayHeader={$dayHeader} sites={$sites} />
-</div>
+</main>

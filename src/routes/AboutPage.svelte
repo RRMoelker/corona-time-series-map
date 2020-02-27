@@ -4,7 +4,7 @@
 
 <Header title="About this map"></Header>
 
-<div class="page-container">
+<main class="page-container">
   <p>Educate public on virus spread</p>
 
   <p>Goals:</p>
@@ -14,4 +14,4 @@
     <li>Communicate both size and infection rate</li>
     <li>Try to reflect infected area as best as possible (no highlighting of entire countries)</li>
   </ul>
-</div>
+</main>

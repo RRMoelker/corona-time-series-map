@@ -24,6 +24,7 @@
     "@smui/icon-button": "^1.0.0-beta.20",
     "@smui/slider": "^1.0.0-beta.20",
     "@smui/textfield": "^1.0.0-beta.20",
+    "dayjs": "^1.8.21",
     "js-easing-functions": "^1.0.3",
     "leaflet": "^1.6.0",
     "node-sass": "^4.13.1",

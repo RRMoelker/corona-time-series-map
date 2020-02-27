@@ -4,7 +4,7 @@
   import FormField from '@smui/form-field';
   import Checkbox from '@smui/checkbox';
   import IconButton from '@smui/icon-button';
-  import Textfield from '@smui/textfield';
+  // import Textfield from '@smui/textfield';
   import Slider from '@smui/slider';
   import { day, dayIdx, numberOfDays, numberOfDays0 } from '../store';
 
@@ -66,8 +66,7 @@
 
 <div class="container">
   {#if $numberOfDays > 0}
-    <Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>
-
+    <!--<Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>-->
     <div class="day-slider">
       <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
     </div>
@@ -75,7 +74,7 @@
     <IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton>
     <IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton>
 
-    <span>{$day}</span>
+    <span>{$day.format('MMM D, YYYY')}</span>
 
     <!--<input type=range bind:value={$dayIdx} on:change={stopTimer} min=0 max={$numberOfDays0}>-->
 

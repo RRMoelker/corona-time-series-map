@@ -4,22 +4,35 @@
   import Controls from '../components/Controls.svelte';
 </script>
 
-<Header title="Coronavirus spread over time"></Header>
-<Map />
-<Controls />
+
+<div class="container">
+  <div class="header-container">
+    <Header title="Coronavirus infection map"></Header>
+  </div>
+  <div class="map-container">
+    <Map />
+  </div>
+  <div class="controls-container">
+    <Controls />
+  </div>
+</div>
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    min-height: 100%;
-    margin: 0 auto;
+    height: 100%;
   }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
+  .container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+  }
+  .header-container {
+    flex: 0 1 auto;
+  }
+  .map-container {
+    flex: 1 1 auto;
+  }
+  .controls-container {
+    flex: 0 1 auto;
   }
 </style>

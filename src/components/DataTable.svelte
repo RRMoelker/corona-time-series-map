@@ -85,10 +85,10 @@ table {
 
 /* Custom styling */
 td.green {
-    background-color: green;
+    background-color: lightgreen;
 }
 td.gray {
-    background-color: green;
+    background-color: lightgray;
 }
 
 </style>

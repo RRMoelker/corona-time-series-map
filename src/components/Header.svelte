@@ -1,5 +1,5 @@
 <script>
-import Button, {Group, GroupItem, Label} from '@smui/button';
+import Button, {Label} from '@smui/button';
 import { Link } from "svelte-routing";
 
 export let title = 'Corona virus map';
@@ -7,12 +7,10 @@ export let title = 'Corona virus map';
 <header>
   <h1>{title}</h1>
 
-  <nav class="top-nav">
-    <Group variant="outlined">
-      <Link to="/"><Button variant="outline"><Label>Map</Label></Button></Link>
-      <Link to="dataset"><Button variant="outline"><Label>Dataset</Label></Button></Link>
-      <Link to="about"><Button variant="outline"><Label>About</Label></Button></Link>
-    </Group>
+  <nav>
+    <Link to="/" class="link"><Button variant="outline"><Label>Map</Label></Button></Link>
+    <Link to="dataset" class="link"><Button variant="outline"><Label>Dataset</Label></Button></Link>
+    <Link to="about" class="link"><Button variant="outline"><Label>About</Label></Button></Link>
   </nav>
 
   <div class="clear"></div>
@@ -22,17 +20,35 @@ export let title = 'Corona virus map';
   header {
     padding: 0 1rem;
     margin-bottom: 1rem;
+
+    border-bottom: 2px solid #6200ee;
   }
   h1 {
+    display: inline-block;
     float: left;
     margin: 0;
   }
-  .top-nav {
+  nav {
     float: right;
+  }
+
+  .link {
+    float: left;
   }
   .clear {
     clear: both;
   }
+  @media (max-width: 750px) {
+      h1 {
+        max-width: 70%;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        float: right;
+      }
+  }
+
 </style>
 
 
