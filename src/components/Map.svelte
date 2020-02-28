@@ -107,7 +107,9 @@
     // add a scale to map (left bottom corner scale)
     L.control.scale().addTo(map);
 
-    const legend = createLegend('bottomright');
+    const isOpen = window.screen.width > 600;
+
+    const legend = createLegend('bottomright', isOpen);
 
     legend.addTo(map);
 
@@ -122,31 +124,46 @@
 <style>
   #map {
     width: 100%;
-    min-height: 300px;
+    min-height: 80%vh;
     height: 100%;
   }
-
-  :global(.leaflet-container .legend-panel) {
+  :global(.legend-panel) {
     border: solid 2px #777777;
-    background-color: white;
     padding: 0.5rem 1rem;
+    background-color: white;
   }
-
-  :global(.leaflet-container .legend-panel h3) {
+  :global(.legend-panel h3) {
+    display: inline-block;
     margin: 0;
   }
-  :global(.leaflet-container .legend-panel ul) {
+  :global(.legend-panel ul) {
     list-style: none;
     padding: 0;
   }
-  :global(.leaflet-container .legend-panel .indent) {
+  :global(.legend-panel .indent) {
     padding-left: 2em;
   }
-  :global(.leaflet-container .legend-panel .swatch) {
+  :global(.legend-panel .swatch) {
     display: inline-block;
     margin-right: 1em;
     width: 1em;
     height: 1em;
     background-color: gray;
+  }
+  :global(.legend-panel:hover) {
+    background-color: #f3f3f3;
+  }
+  :global(.legend-panel.closed .content) {
+    padding: 0.5rem 1rem;
+    display: none;
+  }
+  :global(.legend-panel .icon) {
+    float: right;
+  }
+  :global(.legend-panel.open .do-open) {
+    display: none;
+  }
+  :global(.legend-panel.closed .do-close) {
+    display: none;
   }
 </style>

@@ -38,7 +38,7 @@ export let title = 'Corona virus map';
   .clear {
     clear: both;
   }
-  @media (max-width: 750px) {
+  @media(max-width: 750px) {
       h1 {
         max-width: 70%;
       }
@@ -48,7 +48,11 @@ export let title = 'Corona virus map';
         float: right;
       }
   }
-
+  @media(max-width: 350px) {
+      h1 {
+        max-width: 50%;
+      }
+  }
 </style>
 
 
