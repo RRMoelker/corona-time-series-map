@@ -12,7 +12,7 @@
   </p>
 
   <p>
-    For a more detailed motivation as well as design considerations see <a href="https://dreamonward.com/2020/02/27/coronavirus-spread-animation/">this blog post</a>.
+    For a more detailed motivation as well as design considerations see <a href="https://dreamonward.com/2020/02/28/coronavirus-spread-animation/">this blog post</a>.
     Code is on <a href="https://github.com/RRMoelker/corona-time-series-map">Github</a>.
   </p>
 
