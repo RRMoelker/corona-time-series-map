@@ -53,7 +53,7 @@ export const createLegend = (position, isOpen) => {
     }
 
     let content = `<ul>${list}</ul>`;
-    content += `<p>Marker position reflects region not precise location</p>`;
+    content += `<p class="inaccurate-note">Marker position reflects region not precise location</p>`;
 
     div.innerHTML += `<div class="content">${content}</div>`;
 

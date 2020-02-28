@@ -90,7 +90,7 @@
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
       minZoom: 1.5,
-      maxZoom: 10,
+      maxZoom: 12,
     }).setView(mapCenter, 3);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
@@ -133,10 +133,15 @@
     border: solid 2px #777777;
     padding: 0.5rem 1rem;
     background-color: white;
+    font-size: 1rem;
   }
   :global(.legend-panel h3) {
     display: inline-block;
     margin: 0;
+  }
+  :global(.legend-panel .inaccurate-note) {
+    max-width: 30ch;
+    text-align: center;
   }
   :global(.legend-panel ul) {
     list-style: none;
