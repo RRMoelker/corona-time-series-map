@@ -1,4 +1,6 @@
-Basic web application to visualize Corona virus spread over time.
+[Basic web application](https://coronavirus.dreamonward.com/) to visualize Corona virus spread over time.
+
+[![Coronavirus map app screenshot](doc/readme-app-image.jpg)](https://coronavirus.dreamonward.com/)
 
 See [blog post](https://dreamonward.com/2020/02/28/coronavirus-spread-animation/) for motivation and design considerations.
 
