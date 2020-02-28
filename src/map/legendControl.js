@@ -41,8 +41,15 @@ export const createLegend = (position, isOpen) => {
     list += '<li class="indent">Size: number of confirmed cases</li>';
     for (const key of Object.keys(spreadLevels)) {
       const color = spreadColor[key];
-      const label = spreadLevelsHuman[key];
-      list += `<li><i class="swatch" style="background: ${color};"></i>${key}: ${label} infections/day</li>`;
+      let label = spreadLevelsHuman[key];
+
+
+      // Lol, there actually is a left pad now! Can't use it unfortunately label.padStart
+      const nbsp = '&nbsp';
+      const count = Math.max(6 - label.length, 0);
+      label = nbsp.repeat(count * 2) + label; // *2 is needed because spaces aren't same width as char apparently
+
+      list += `<li><i class="swatch" style="background: ${color};"></i>${label} infections/day</li>`;
     }
 
     let content = `<ul>${list}</ul>`;

@@ -7,21 +7,23 @@ export const spreadLevels = { // equal or less than x per day
 
 export const spreadLevelsHuman = {
   'stagnant': '0',
-  'low': `<=${spreadLevels.low}`,
-  'medium': `<=${spreadLevels.medium}`,
-  'high': `>${spreadLevels.medium}`,
+  'low': `<= ${spreadLevels.low}`,
+  'medium': `<= ${spreadLevels.medium}`,
+  'high': `> ${spreadLevels.medium}`,
 };
 
+// Blue tints
 // export const spreadColor = {
 //   'stagnant': '#9bad9e',
-//   'low': '#4dd8d7',
-//   'medium': '#38a4c8',
-//   'high': '#1645c8',
+//   'low': '#00c8ff',
+//   'medium': '#0b54e7',
+//   'high': '#6200ff',
 // };
 
+// Red tints, higher contrast
 export const spreadColor = {
-  'stagnant': '#9bad9e',
-  'low': '#00c8ff',
-  'medium': '#0b54e7',
-  'high': '#6200ff',
+  'stagnant': '#4c4f46',
+  'low': '#ff9100',
+  'medium': '#ff1e00',
+  'high': '#ac001a',
 };
