@@ -116,6 +116,7 @@
 
 .day-label {
   margin: .5em 1em;
+  min-width: 12ch;
 }
 
 .button-wrapper {
