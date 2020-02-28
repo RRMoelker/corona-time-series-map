@@ -30,10 +30,7 @@ export let title = 'Corona virus map';
   }
   nav {
     float: right;
-  }
-
-  .link {
-    float: left;
+    text-align: right;
   }
   .clear {
     clear: both;

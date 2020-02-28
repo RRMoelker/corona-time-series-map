@@ -67,7 +67,6 @@
   Created by <a href="https://dreamonward.com/">DreamOnward</a>.
 </p>
 
-
 <div class="container">
   {#if $numberOfDays > 0}
     <!--<Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>-->
@@ -106,10 +105,10 @@
   justify-content: center;
   margin-top: 1em;
 }
-.container .skip-btn {
+.skip-btn {
   margin-bottom: -.5em; /* counteract margin inside Material ui button */
+  color: #138786;
 }
-
 .day-slider {
   width: 30%;
   padding: 12px;

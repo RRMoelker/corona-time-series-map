@@ -9,7 +9,7 @@
   let markersGroup = undefined;
   let map;
 
-  const mapCenter = [30, 60]; // between Europe and Asia it bit more on the northern hemisphere.
+  const mapCenter = [20, 110]; // over China
 
   const addLi = (ul, text) => {
     const li = document.createElement("li");
