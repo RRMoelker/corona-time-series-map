@@ -1,7 +1,12 @@
 <script>
+  import LinearProgress from '@smui/linear-progress';
   import DataTable from '../components/DataTable.svelte';
   import Header from '../components/Header.svelte';
   import { dayHeader, sites } from '../store';
+
+  let showTable = false;
+
+  setTimeout(() => showTable = true, 1000); // wait few ms before loading table (render = slow).
 </script>
 
 <Header title="Dataset behind the map"></Header>
@@ -13,5 +18,9 @@
   Overview of data from source enriched (averaged) derivated.
   </p>
 
-  <DataTable dayHeader={$dayHeader} sites={$sites} />
+  {#if showTable }
+    <DataTable dayHeader={$dayHeader} sites={$sites} />
+  {:else}
+    <LinearProgress indeterminate />
+  {/if}
 </main>
