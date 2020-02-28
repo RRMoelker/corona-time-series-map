@@ -17,6 +17,9 @@ export const createLegend = (position) => {
     }
 
     div.innerHTML += `<ul>${list}</ul>`;
+
+    div.innerHTML += `<p>Marker position reflects region not precise location</p>`;
+
     return div;
   };
   return legend;

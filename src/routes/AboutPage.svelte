@@ -1,17 +1,23 @@
 <script>
   import Header from '../components/Header.svelte';
+  import { Link } from "svelte-routing";
 </script>
 
 <Header title="About this map"></Header>
 
 <main class="page-container">
-  <p>Educate public on virus spread</p>
+  <p>
+    The goal of this app is to show Coronavirus spread over time.
+    To allow people to make a more educated risk assessment.
+  </p>
 
-  <p>Goals:</p>
-  <ul>
-    <li>Show virus progress over time</li>
-    <li>Visualize infection rate</li>
-    <li>Communicate both size and infection rate</li>
-    <li>Try to reflect infected area as best as possible (no highlighting of entire countries)</li>
-  </ul>
+  <p>
+    For a more detailed motivation as well as design considerations see <a href="https://dreamonward.com/2020/02/27/coronavirus-spread-animation/">this blog post</a>.
+    Code is on <a href="https://github.com/RRMoelker/corona-time-series-map">Github</a>.
+  </p>
+
+  <p>
+    To learn more about the data behind the map see the <Link to="dataset">dataset page</Link>.
+    For license and legal please see the <a href="https://github.com/RRMoelker/corona-time-series-map/blob/master/LICENSE">license file</a>.
+  </p>
 </main>

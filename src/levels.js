@@ -13,8 +13,8 @@ export const spreadLevelsHuman = {
 };
 
 export const spreadColor = {
-  'stagnant': '#4c4f46',
-  'low': '#ff9100',
-  'medium': '#ff1e00',
-  'high': '#ac001a',
+  'stagnant': '#9bad9e',
+  'low': '#4dd8d7',
+  'medium': '#38a4c8',
+  'high': '#1645c8',
 };

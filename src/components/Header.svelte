@@ -8,9 +8,9 @@ export let title = 'Corona virus map';
   <h1>{title}</h1>
 
   <nav>
-    <Link to="/" class="link"><Button variant="outline"><Label>Map</Label></Button></Link>
-    <Link to="dataset" class="link"><Button variant="outline"><Label>Dataset</Label></Button></Link>
-    <Link to="about" class="link"><Button variant="outline"><Label>About</Label></Button></Link>
+    <Link to="/"><Button variant="outline"><Label>Map</Label></Button></Link>
+    <Link to="dataset"><Button variant="outline"><Label>Dataset</Label></Button></Link>
+    <Link to="about"><Button variant="outline"><Label>About</Label></Button></Link>
   </nav>
 
   <div class="clear"></div>

@@ -88,6 +88,7 @@
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
       minZoom: 1.5,
+      maxZoom: 10,
     }).setView(mapCenter, 3);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
