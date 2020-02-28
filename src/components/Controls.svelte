@@ -71,19 +71,21 @@
       <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
     </div>
 
-    <IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton>
-    <IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton>
+    <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton></div>
+    <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton></div>
 
-    <span>{$day.format('MMM D, YYYY')}</span>
+    <span class="day-label">{$day.format('MMM D, YYYY')}</span>
 
-    <!--<input type=range bind:value={$dayIdx} on:change={stopTimer} min=0 max={$numberOfDays0}>-->
-
-    <Button on:click={toggleTimer} variant="unelevated" color="secondary">
-      <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><Label>{ isRunning ? 'pause' : 'play' }</Label>
-    </Button>
-    <Button on:click={reset} disabled={$dayIdx == 0}  variant="unelevated" color="secondary">
-      <Icon class="material-icons">replay</Icon><Label>restart</Label>
-    </Button>
+    <div class="button-wrapper">
+      <Button on:click={toggleTimer} variant="unelevated" color="secondary">
+        <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><Label>{ isRunning ? 'pause' : 'play' }</Label>
+      </Button>
+    </div>
+    <div class="button-wrapper">
+      <Button on:click={reset} disabled={$dayIdx == 0}  variant="unelevated" color="secondary">
+        <Icon class="material-icons">replay</Icon><Label>restart</Label>
+      </Button>
+    </div>
 
     <FormField>
       <Checkbox bind:checked={loop} />
@@ -93,8 +95,27 @@
 </div>
 
 <style>
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+}
+.container .skip-btn {
+  margin-bottom: -.5em; /* counteract margin inside Material ui button */
+}
+
 .day-slider {
-  display: inline-block;
   width: 30%;
+  padding: 12px;
+}
+
+.day-label {
+  margin: 0 1em;
+}
+
+.button-wrapper {
+  margin: 0 .5em;
 }
 </style>

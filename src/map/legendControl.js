@@ -42,7 +42,7 @@ export const createLegend = (position, isOpen) => {
     for (const key of Object.keys(spreadLevels)) {
       const color = spreadColor[key];
       const label = spreadLevelsHuman[key];
-      list += `<li><i class="swatch" style="background: ${color};"></i>${key}: ${label}</li>`;
+      list += `<li><i class="swatch" style="background: ${color};"></i>${key}: ${label} infections/day</li>`;
     }
 
     let content = `<ul>${list}</ul>`;

@@ -4,7 +4,7 @@
   import { spreadLevels, spreadColor } from '../levels';
   import { dayIdx, sites } from '../store';
   import { createLegend } from '../map/legendControl';
-  import {computeCircleRadius} from '../map/calculations';
+  import { computeCircleRadius } from '../map/calculations';
 
   let markersGroup = undefined;
   let map;
@@ -22,7 +22,7 @@
     addLi(ul, `Province/State: ${site.province}`);
     addLi(ul, `Country/Region: ${site.region}`);
     addLi(ul, `Confirmed: ${count}`);
-    addLi(ul, `infect/day (smooth): ${derivativeA}`);
+    addLi(ul, `Infections/day (smooth): ${derivativeA}`);
     return ul;
   };
 
@@ -61,7 +61,9 @@
         }
 
         const marker = L.circle(latLng, {
-          color,
+          color: color,
+          fillColor: color,
+          weight: 4, // px (larger radius means dots are visible zoomed out)
           radius // Radius of the circle in meters.
         });
 
