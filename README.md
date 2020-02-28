@@ -1,13 +1,6 @@
 Basic web application to visualize Corona virus spread over time.
 
-
-# Design concept
-  
-* Highlight regions for multiple cases
-* Color code infection rate (white to red
-* Cured" regions in gray
-* Number of cases using dot pattern
-* Isolated cases as circle marker
+See [blog post](https://dreamonward.com/2020/02/27/coronavirus-spread-animation/) for motivation and design considerations.
 
 # Data
 

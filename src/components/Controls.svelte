@@ -63,6 +63,10 @@
   startTimer();
 </script>
 
+<p class="by">
+  Created by <a href="https://dreamonward.com/">DreamOnward</a>.
+</p>
+
 
 <div class="container">
   {#if $numberOfDays > 0}
@@ -112,10 +116,22 @@
 }
 
 .day-label {
-  margin: 0 1em;
+  margin: .5em 1em;
 }
 
 .button-wrapper {
   margin: 0 .5em;
+}
+.by {
+  float: right;
+  text-align: right;
+  vertical-align: bottom;
+  color: gray;
+  font-size: 0.5rem;
+}
+@media(max-width: 1000px) {
+  .by {
+    display: none;
+  }
 }
 </style>
