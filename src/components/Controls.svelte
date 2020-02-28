@@ -70,12 +70,15 @@
 <div class="container">
   {#if $numberOfDays > 0}
     <!--<Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>-->
-    <div class="day-slider">
-      <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
-    </div>
 
-    <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton></div>
-    <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton></div>
+    <div class="direct-control"><!-- groups items to display on small screen-->
+      <div class="day-slider">
+        <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
+      </div>
+
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton></div>
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton></div>
+    </div>
 
     <span class="day-label">{$day.format('MMM D, YYYY')}</span>
 
@@ -105,18 +108,27 @@
   justify-content: center;
   margin-top: 1em;
 }
+.direct-control {
+  display: flex;
+  width: 40%;
+  min-width: 300px;
+}
+
 .skip-btn {
-  margin-bottom: -.5em; /* counteract margin inside Material ui button */
+  flex: 0 0 auto;
+  margin-top: -.5em; /* counteract margin inside Material ui button */
+  margin-top: .5em;
   color: #138786;
 }
 .day-slider {
-  width: 30%;
-  padding: 12px;
+  flex: 1 1 auto;
+  padding-top: 10px;
 }
 
 .day-label {
-  margin: .5em 1em;
+  margin: .6em 1em 1em;
   min-width: 12ch;
+  text-align: center;
 }
 
 .button-wrapper {
@@ -128,6 +140,12 @@
   vertical-align: bottom;
   color: gray;
   font-size: 0.5rem;
+}
+@media(max-width: 415px) {
+  .day-label {
+    flex-basis: 100%; /* causes element to have it's own row */
+    margin-top: 0;
+  }
 }
 @media(max-width: 1000px) {
   .by {
