@@ -7,7 +7,7 @@
 
 <div class="container">
   <div class="header-container">
-    <Header title="Coronavirus infection map"></Header>
+    <Header title="Coronavirus spread"></Header>
   </div>
   <div class="map-container">
     <Map />
@@ -39,4 +39,6 @@
   .controls-container {
     flex: 0 1 auto;
   }
+
+
 </style>

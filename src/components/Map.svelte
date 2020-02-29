@@ -109,7 +109,10 @@
     // add a scale to map (left bottom corner scale)
     L.control.scale().addTo(map);
 
-    const isOpen = window.screen.width > 600;
+    const el = map.getContainer();
+    const width = el.offsetWidth;
+    const height = el.offsetHeight
+    const isOpen = width > 600 && height > 400;
 
     const legend = createLegend('bottomright', isOpen);
 

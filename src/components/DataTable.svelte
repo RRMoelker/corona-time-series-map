@@ -75,8 +75,7 @@
 }
 table, th, td {
     padding: 5px;
-    border: 1px solid
-    black;
+    border: 1px solid black;
 }
 table {
     border-collapse: collapse;

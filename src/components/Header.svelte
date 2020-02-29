@@ -34,7 +34,7 @@ let menu;
 
 <style>
   header {
-    padding: 0 1rem;
+    padding: .5rem 1rem 0;
     margin-bottom: 1rem;
 
     border-bottom: 2px solid #6200ee;
@@ -66,11 +66,16 @@ let menu;
   @media(max-width: 750px) {
       h1 {
         max-width: 70%;
+        font-size: 1.5em;
+      }
+      header {
+        margin-bottom: 0.5rem;
       }
   }
   @media(max-width: 350px) {
       h1 {
         max-width: 50%;
+        font-size: 1.3em;
         word-break: break-word;
       }
   }

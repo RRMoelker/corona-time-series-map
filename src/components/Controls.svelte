@@ -84,19 +84,21 @@
 
     <div class="button-wrapper">
       <Button on:click={toggleTimer} variant="unelevated" color="secondary">
-        <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><Label>{ isRunning ? 'pause' : 'play' }</Label>
+        <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><div class="play-reset-label"><Label>{ isRunning ? 'pause' : 'play' }</Label></div>
       </Button>
     </div>
     <div class="button-wrapper">
       <Button on:click={reset} disabled={$dayIdx == 0}  variant="unelevated" color="secondary">
-        <Icon class="material-icons">replay</Icon><Label>restart</Label>
+        <Icon class="material-icons">replay</Icon><div class="play-reset-label"><Label>restart</Label></div>
       </Button>
     </div>
 
-    <FormField>
-      <Checkbox bind:checked={loop} />
-      <span>Loop</span>
-    </FormField>
+    <div class="loop-wrapper">
+      <FormField>
+        <Checkbox bind:checked={loop} />
+        <span>Loop</span>
+      </FormField>
+    </div>
   {/if}
 </div>
 
@@ -106,7 +108,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-top: 1em;
+  margin: .5em .5rem .5rem;
 }
 .direct-control {
   display: flex;
@@ -126,7 +128,7 @@
 }
 
 .day-label {
-  margin: .6em 1em 1em;
+  margin: .6em .5em 1em;
   min-width: 12ch;
   text-align: center;
 }
@@ -146,10 +148,26 @@
     flex-basis: 100%; /* causes element to have it's own row */
     margin-top: 0;
   }
+  .loop-wrapper {
+    display: none;
+  }
 }
 @media(max-width: 1000px) {
+  .container {
+    margin: .5em 0 .2em;
+  }
   .by {
     display: none;
+  }
+}
+@media(orientation: landscape) {
+  @media(max-width: 800px) {
+    .play-reset-label {
+      display: none;
+    }
+    .loop-wrapper {
+      display: none;
+    }
   }
 }
 </style>

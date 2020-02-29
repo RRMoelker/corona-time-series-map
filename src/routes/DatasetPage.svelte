@@ -9,13 +9,15 @@
   setTimeout(() => showTable = true, 1000); // wait few ms before loading table (render = slow).
 </script>
 
-<Header title="Dataset behind the map"></Header>
+<Header title="Map dataset"></Header>
 
 <main class="page-container">
   <p>
   Data source from <a href="https://github.com/CSSEGISandData/COVID-19">Novel Coronavirus (COVID-19) Cases</a> by JHU CSSE.
+  </p>
 
-  Overview of data from source enriched (averaged) derivated.
+  <p>
+  Overview of data from source enriched with (averaged) derivative.
   </p>
 
   {#if showTable }
