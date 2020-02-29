@@ -13,9 +13,6 @@ const getButton = () => {
 
 const getHeader = () => {
   const div = L.DomUtil.create('div', 'header');
-  const button = getButton();
-  div.appendChild(button);
-  div.innerHTML += '<h3>Legend</h3>';
   return div;
 };
 

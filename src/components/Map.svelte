@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
   import L from 'leaflet';
   import { spreadLevels, spreadColor } from '../levels';
-  import { dayIdx, sites } from '../store';
+  import { day, dayIdx, sites } from '../store';
   import { createLegend } from '../map/legendControl';
   import { computeCircleRadius } from '../map/calculations';
 
@@ -82,8 +82,8 @@
   };
 
 	onMount(async () => {
-	  const  southWest = L.latLng(-90, -180);
-    const northEast = L.latLng(90, 180);
+	  const  southWest = L.latLng(-90, -220);
+    const northEast = L.latLng(90, 220);
     const bounds = L.latLngBounds(southWest, northEast);
 
     map = L.map('map', {
@@ -91,6 +91,7 @@
       maxBoundsViscosity: 1.0,
       minZoom: 1.5,
       maxZoom: 12,
+      zoomControl: false,
     }).setView(mapCenter, 3);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
@@ -117,20 +118,55 @@
     const legend = createLegend('bottomright', isOpen);
 
     legend.addTo(map);
-
   });
 
   // listen to changes on dayIdx
   $: showDay($sites, $dayIdx);
 </script>
 
-<div id="map"></div>
+<div class="container">
+  <div class="aspect-wrapper">
+    <div id="map"></div>
+  </div>
+
+  <h1 class="header title">Coronavirus</h1>
+  <h1 class="header day">{$day.format('MMM D, YYYY')}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+</div>
 
 <style>
-  #map {
-    width: 100%;
-    min-height: 80%vh;
+  .container {
+    position: relative;
     height: 100%;
+  }
+  .header {
+    position: absolute;
+    top: 0;
+    left: 1em;
+    z-index: 99;
+    text-align: center;
+
+    mix-blend-mode: difference
+  }
+  .title {
+    display: none;
+    color: #ff4800;
+  }
+  .day {
+    color: #e2ff00;
+    text-align: center;
+    width: 100%;
+  }
+  .aspect-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    background: gold; /** <-- For the demo **/
+  }
+
+  #map {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    z-index: 42;
   }
   :global(.legend-panel) {
     border: solid 2px #777777;
