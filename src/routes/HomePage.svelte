@@ -34,7 +34,6 @@
     flex: 1 1 auto;
     z-index: 20;
     height: 50%; /* Safari (a.k.a: Apple IE) needs a starting height for Leaflet to init... */
-    background-color: green;
   }
   .controls-container {
     flex: 0 1 auto;
