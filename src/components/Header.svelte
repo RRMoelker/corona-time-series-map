@@ -55,7 +55,7 @@ let menu;
     clear: both;
   }
 
-  @media(min-width: 750px) {
+  @media(min-width: 600px) {
       nav.wide {
         display: block;
       }

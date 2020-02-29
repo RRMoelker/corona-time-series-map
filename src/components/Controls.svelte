@@ -6,7 +6,7 @@
   import IconButton from '@smui/icon-button';
   // import Textfield from '@smui/textfield';
   import Slider from '@smui/slider';
-  import { day, dayIdx, numberOfDays, numberOfDays0 } from '../store';
+  import { dayIdx, numberOfDays, numberOfDays0 } from '../store';
 
   const timeStep = 1000; // ms
   let loop = false;
@@ -80,8 +80,6 @@
       <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton></div>
     </div>
 
-    <span class="day-label">{$day.format('MMM D, YYYY')}</span>
-
     <div class="button-wrapper">
       <Button on:click={toggleTimer} variant="unelevated" color="secondary">
         <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><div class="play-reset-label"><Label>{ isRunning ? 'pause' : 'play' }</Label></div>
@@ -127,12 +125,6 @@
   padding-top: 10px;
 }
 
-.day-label {
-  margin: .6em .5em 1em;
-  min-width: 12ch;
-  text-align: center;
-}
-
 .button-wrapper {
   margin: 0 .5em;
 }
@@ -144,10 +136,6 @@
   font-size: 0.5rem;
 }
 @media(max-width: 415px) {
-  .day-label {
-    flex-basis: 100%; /* causes element to have it's own row */
-    margin-top: 0;
-  }
   .loop-wrapper {
     display: none;
   }

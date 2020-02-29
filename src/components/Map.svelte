@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
   import L from 'leaflet';
   import { spreadLevels, spreadColor } from '../levels';
-  import { dayIdx, sites } from '../store';
+  import { day, dayIdx, sites } from '../store';
   import { createLegend } from '../map/legendControl';
   import { computeCircleRadius } from '../map/calculations';
 
@@ -91,6 +91,7 @@
       maxBoundsViscosity: 1.0,
       minZoom: 1.5,
       maxZoom: 12,
+      zoomControl: false
     }).setView(mapCenter, 3);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
@@ -112,8 +113,13 @@
     const el = map.getContainer();
     const width = el.offsetWidth;
     const height = el.offsetHeight
-    const isOpen = width > 600 && height > 400;
 
+    const isLargeishScreen = width > 700 || height > 700;
+    if (isLargeishScreen) {
+      new L.Control.Zoom({ position: 'topright' }).addTo(map);
+    }
+
+    const isOpen = width > 600 && height > 400;
     const legend = createLegend('bottomright', isOpen);
 
     legend.addTo(map);
@@ -124,14 +130,48 @@
   $: showDay($sites, $dayIdx);
 </script>
 
-<div id="map"></div>
+<div class="container">
+  <div id="map"></div>
+
+  <h1 class="header day">{$day.format('MMM D, YYYY')}</h1>
+</div>
 
 <style>
-  #map {
-    width: 100%;
+  .container {
+    position: relative;
     min-height: 80%vh;
     height: 100%;
   }
+  .day {
+    position: absolute;
+    top: 0;
+    z-index: 99;
+    margin: .5rem 1rem 0;
+    width: 100%;
+    text-align: center;
+    mix-blend-mode: difference;
+    color: #e2ff00;
+  }
+  #map {
+    z-index: 42;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media(max-width: 415px) {
+    .day {
+      text-align: left;
+      font-size: 1rem;
+    }
+  }
+  @media(max-height: 415px) { /* duplicate logic of max-width query, svelte doesn't seem to support media query OR */
+      .day {
+        text-align: left;
+        font-size: 1rem;
+      }
+    }
+
+  /* Legend panel styling */
   :global(.legend-panel) {
     border: solid 2px #777777;
     padding: 0.5rem 1rem;
@@ -165,6 +205,9 @@
   }
   :global(.legend-panel.closed .content) {
     padding: 0.5rem 1rem;
+    display: none;
+  }
+  :global(.legend-panel.open .header) {
     display: none;
   }
   :global(.legend-panel .icon) {
