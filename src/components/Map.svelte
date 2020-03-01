@@ -9,7 +9,8 @@
   let markersGroup = undefined;
   let map;
 
-  const mapCenter = [20, 110]; // over China
+  const mapCenter = [20, 110]; // China
+  let activeProvince = undefined; // Stores selected marker between days to show pop up
 
   const addLi = (ul, text) => {
     const li = document.createElement("li");
@@ -37,7 +38,9 @@
     }
 
     if (markersGroup) {
+      const activeProvinceMem = activeProvince; // remember active province because pop up removal will delete value. No way around this hack as far as I can tell.
       map.removeLayer(markersGroup);
+      activeProvince = activeProvinceMem;
     }
 
     markersGroup = L.layerGroup();
@@ -68,14 +71,33 @@
         });
 
         marker.bindPopup(createPopupContent(site, count, derivativeA));
+
+        if (site.province == activeProvince)  {
+          // province was selected on different day already, immediately open this pop up
+          setTimeout(() => {
+            marker.openPopup(); // needs to be called after it is added to the map (but that is outside this loop, hacking with setTimeout).
+          }, 10);
+        }
+
+        // Whole lot of events and logic to have pop up stay visible between days for both mouse and touch users.
+        marker.on('click', function (e) {
+          // toggle active marker
+          activeProvince = activeProvince == site.province ? undefined : site.province;
+        });
         marker.on('mouseover', function (e) {
             this.openPopup();
         });
+
         marker.on('mouseout', function (e) {
-            this.closePopup();
+          activeProvince = undefined;
+          this.closePopup();
+        });
+        marker.on('popupclose', () => { // e.g.: closed by user manually
+          activeProvince = undefined;
         });
 
         marker.addTo(markersGroup);
+        break;
       }
     }
     markersGroup.addTo(map)
@@ -124,6 +146,7 @@
 
     legend.addTo(map);
 
+    map.on('click', () => activeProvince = undefined);
   });
 
   // listen to changes on dayIdx
