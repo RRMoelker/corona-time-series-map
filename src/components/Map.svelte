@@ -168,7 +168,8 @@
 <style>
   .container {
     position: relative;
-    min-height: 80%vh;
+    overflow-x: hidden;
+    min-height: 80vh;
     height: 100%;
   }
   .day {
