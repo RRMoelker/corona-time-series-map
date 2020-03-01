@@ -9,7 +9,8 @@
   let markersGroup = undefined;
   let map;
 
-  const mapCenter = [20, 110]; // over China
+  const mapCenter = [20, 110]; // China
+  let activeProvince = undefined; // Stores selected marker between days to show pop up
 
   const addLi = (ul, text) => {
     const li = document.createElement("li");
@@ -37,7 +38,9 @@
     }
 
     if (markersGroup) {
+      const activeProvinceMem = activeProvince; // remember active province because pop up removal will delete value. No way around this hack as far as I can tell.
       map.removeLayer(markersGroup);
+      activeProvince = activeProvinceMem;
     }
 
     markersGroup = L.layerGroup();
@@ -60,19 +63,44 @@
           color = spreadColor.high;
         }
 
+
+        let className = 'virusmarker';
+        if(site.active[dayIdx] == 1) {
+          // first day of confirmed case
+          className += ' first';
+        }
         const marker = L.circle(latLng, {
           color: color,
           fillColor: color,
           weight: 4, // px (larger radius means dots are visible zoomed out)
-          radius // Radius of the circle in meters.
+          radius, // Radius of the circle in meters.
+          className
         });
 
         marker.bindPopup(createPopupContent(site, count, derivativeA));
+
+        if (site.province == activeProvince)  {
+          // province was selected on different day already, immediately open this pop up
+          setTimeout(() => {
+            marker.openPopup(); // needs to be called after it is added to the map (but that is outside this loop, hacking with setTimeout).
+          }, 10);
+        }
+
+        // Whole lot of events and logic to have pop up stay visible between days for both mouse and touch users.
+        marker.on('click', function (e) {
+          // toggle active marker
+          activeProvince = activeProvince == site.province ? undefined : site.province;
+        });
         marker.on('mouseover', function (e) {
             this.openPopup();
         });
+
         marker.on('mouseout', function (e) {
-            this.closePopup();
+          activeProvince = undefined;
+          this.closePopup();
+        });
+        marker.on('popupclose', () => { // e.g.: closed by user manually
+          activeProvince = undefined;
         });
 
         marker.addTo(markersGroup);
@@ -124,6 +152,7 @@
 
     legend.addTo(map);
 
+    map.on('click', () => activeProvince = undefined);
   });
 
   // listen to changes on dayIdx
@@ -144,9 +173,11 @@
   }
   .day {
     position: absolute;
-    top: 0;
+    top: .5rem;
+    left: 1rem;
+    margin: 0;
+    padding: 0;
     z-index: 99;
-    margin: .5rem 1rem 0;
     width: 100%;
     text-align: center;
     mix-blend-mode: difference;
@@ -162,14 +193,21 @@
     .day {
       text-align: left;
       font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
     }
   }
   @media(max-height: 415px) { /* duplicate logic of max-width query, svelte doesn't seem to support media query OR */
-      .day {
-        text-align: left;
-        font-size: 1rem;
-      }
+    .day {
+      text-align: left;
+      font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
     }
+  }
+
+  /* Additional marker styling (on top of leaflet) */
+  :global(.virusmarker.first) {
+    animation: scalein 0.5s ease-out 1;
+  }
 
   /* Legend panel styling */
   :global(.legend-panel) {
@@ -182,16 +220,30 @@
     display: inline-block;
     margin: 0;
   }
-  :global(.legend-panel .inaccurate-note) {
-    max-width: 30ch;
-    text-align: center;
+  :global(.legend-panel .content) {
+    height: 100%;
   }
   :global(.legend-panel ul) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
     list-style: none;
     padding: 0;
+    margin: 0;
+  }
+  :global(.legend-panel li) {
+    display: inline-block;
+    flex: 1 1 50%;
+  }
+  :global(.legend-panel .count) {
+    display: inline-block;
+    min-width: 5ch;
+    text-align: right;
   }
   :global(.legend-panel .indent) {
     padding-left: 2em;
+    flex-basis: 100%;
   }
   :global(.legend-panel .swatch) {
     display: inline-block;

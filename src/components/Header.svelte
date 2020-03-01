@@ -28,33 +28,31 @@ let menu;
     <Link to="dataset"><Button variant="outline"><Label>Dataset</Label></Button></Link>
     <Link to="about"><Button variant="outline"><Label>About</Label></Button></Link>
   </nav>
-
-  <div class="clear"></div>
 </header>
 
 <style>
   header {
+    display: flex;
+    align-items: center;
+
     padding: .5rem 1rem 0;
     margin-bottom: 1rem;
 
     border-bottom: 2px solid #6200ee;
   }
   h1 {
-    display: inline-block;
-    float: left;
+    flex: 1 1 auto;
     margin: 0;
+    padding-bottom: 0.2em;
   }
   nav {
-    float: right;
+    flex: 0 0 auto;
     text-align: right;
+    margin-bottom: -7px; /* offset margin-bottom in material button component (hard to edit) */
   }
   nav.wide {
     display: none;
   }
-  .clear {
-    clear: both;
-  }
-
   @media(min-width: 600px) {
       nav.wide {
         display: block;
@@ -63,18 +61,21 @@ let menu;
         display: none;
       }
   }
+  @media(max-height: 700px) {
+    header {
+      margin-bottom: 0;
+    }
+  }
   @media(max-width: 750px) {
-      h1 {
-        max-width: 70%;
-        font-size: 1.5em;
-      }
       header {
-        margin-bottom: 0.5rem;
+        padding: .5rem .5rem 0;
+      }
+      h1 {
+        font-size: 1.5em;
       }
   }
   @media(max-width: 350px) {
       h1 {
-        max-width: 50%;
         font-size: 1.3em;
         word-break: break-word;
       }

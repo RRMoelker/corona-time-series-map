@@ -28,7 +28,7 @@
   }
   .header-container {
     flex: 0 1 auto;
-    z-index: 42; /* above map-container */
+    z-index: 99; /* on top of map-container */
   }
   .map-container {
     flex: 1 1 auto;
@@ -37,6 +37,7 @@
   }
   .controls-container {
     flex: 0 1 auto;
+    z-index: 42; /* on top of map */
   }
 
 
