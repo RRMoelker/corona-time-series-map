@@ -144,9 +144,11 @@
   }
   .day {
     position: absolute;
-    top: 0;
+    top: .5rem;
+    left: 1rem;
+    margin: 0;
+    padding: 0;
     z-index: 99;
-    margin: .5rem 1rem 0;
     width: 100%;
     text-align: center;
     mix-blend-mode: difference;
@@ -162,14 +164,16 @@
     .day {
       text-align: left;
       font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
     }
   }
   @media(max-height: 415px) { /* duplicate logic of max-width query, svelte doesn't seem to support media query OR */
-      .day {
-        text-align: left;
-        font-size: 1rem;
-      }
+    .day {
+      text-align: left;
+      font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
     }
+  }
 
   /* Legend panel styling */
   :global(.legend-panel) {
