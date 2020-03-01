@@ -174,7 +174,7 @@
   }
   .day {
     position: absolute;
-    top: .5rem;
+    top: 1rem;
     left: 1rem;
     margin: 0;
     padding: 0;

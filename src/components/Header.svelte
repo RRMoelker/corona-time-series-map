@@ -36,7 +36,7 @@ let menu;
     align-items: center;
 
     padding: .5rem 1rem 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 
     border-bottom: 2px solid #6200ee;
   }
@@ -60,11 +60,6 @@ let menu;
       nav.small {
         display: none;
       }
-  }
-  @media(max-height: 700px) {
-    header {
-      margin-bottom: 0;
-    }
   }
   @media(max-width: 750px) {
       header {
