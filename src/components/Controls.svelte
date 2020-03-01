@@ -8,7 +8,7 @@
   import Slider from '@smui/slider';
   import { dayIdx, numberOfDays, numberOfDays0 } from '../store';
 
-  const timeStep = 1000; // ms
+  const timeStep = 800; // ms
   let loop = false;
   let isRunning = false;
   let interval;
