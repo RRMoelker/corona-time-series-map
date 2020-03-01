@@ -63,12 +63,21 @@
           color = spreadColor.high;
         }
 
+
+        let className = 'virusmarker';
+        if(site.active[dayIdx] == 1) {
+          // first day of confirmed case
+          className += ' first';
+        }
         const marker = L.circle(latLng, {
           color: color,
           fillColor: color,
           weight: 4, // px (larger radius means dots are visible zoomed out)
-          radius // Radius of the circle in meters.
+          radius, // Radius of the circle in meters.
+          className
+
         });
+
 
         marker.bindPopup(createPopupContent(site, count, derivativeA));
 
@@ -97,7 +106,6 @@
         });
 
         marker.addTo(markersGroup);
-        break;
       }
     }
     markersGroup.addTo(map)
@@ -196,6 +204,11 @@
       font-size: 1rem;
       width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
     }
+  }
+
+  /* Additional marker styling (on top of leaflet) */
+  :global(.virusmarker.first) {
+    animation: scalein 0.5s ease-out 1;
   }
 
   /* Legend panel styling */
