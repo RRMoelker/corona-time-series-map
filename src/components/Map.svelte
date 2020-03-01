@@ -75,9 +75,7 @@
           weight: 4, // px (larger radius means dots are visible zoomed out)
           radius, // Radius of the circle in meters.
           className
-
         });
-
 
         marker.bindPopup(createPopupContent(site, count, derivativeA));
 
@@ -222,16 +220,30 @@
     display: inline-block;
     margin: 0;
   }
-  :global(.legend-panel .inaccurate-note) {
-    max-width: 30ch;
-    text-align: center;
+  :global(.legend-panel .content) {
+    height: 100%;
   }
   :global(.legend-panel ul) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
     list-style: none;
     padding: 0;
+    margin: 0;
+  }
+  :global(.legend-panel li) {
+    display: inline-block;
+    flex: 1 1 50%;
+  }
+  :global(.legend-panel .count) {
+    display: inline-block;
+    min-width: 5ch;
+    text-align: right;
   }
   :global(.legend-panel .indent) {
     padding-left: 2em;
+    flex-basis: 100%;
   }
   :global(.legend-panel .swatch) {
     display: inline-block;
