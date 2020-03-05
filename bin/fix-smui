@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# smui package performs debug console.log, removing until fixed upstream https://github.com/hperrin/svelte-material-ui/issues/101
+
+sed -i.bak 's/console.log/\/\/ console.log/' node_modules/@smui/ripple/Ripple.js
