@@ -12,6 +12,8 @@ const computeActive = list => {
   for (let i = 0; i < list.length; ++i) {
     if (list[i] > 0) {
       active[i] = (i > 0 ? active[i-1] : 0) + 1;
+    } else {
+      active[i] = 0;
     }
   }
   return active;

@@ -9,7 +9,8 @@
   let markersGroup = undefined;
   let map;
 
-  const mapCenter = [20, 110]; // over China
+  const mapCenter = [20, 110]; // China
+  let activeProvince = undefined; // Stores selected marker between days to show pop up
 
   const addLi = (ul, text) => {
     const li = document.createElement("li");
@@ -37,7 +38,9 @@
     }
 
     if (markersGroup) {
+      const activeProvinceMem = activeProvince; // remember active province because pop up removal will delete value. No way around this hack as far as I can tell.
       map.removeLayer(markersGroup);
+      activeProvince = activeProvinceMem;
     }
 
     markersGroup = L.layerGroup();
@@ -60,19 +63,44 @@
           color = spreadColor.high;
         }
 
+
+        let className = 'virusmarker';
+        if(site.active[dayIdx] == 1) {
+          // first day of confirmed case
+          className += ' first';
+        }
         const marker = L.circle(latLng, {
           color: color,
           fillColor: color,
           weight: 4, // px (larger radius means dots are visible zoomed out)
-          radius // Radius of the circle in meters.
+          radius, // Radius of the circle in meters.
+          className
         });
 
         marker.bindPopup(createPopupContent(site, count, derivativeA));
+
+        if (site.province == activeProvince)  {
+          // province was selected on different day already, immediately open this pop up
+          setTimeout(() => {
+            marker.openPopup(); // needs to be called after it is added to the map (but that is outside this loop, hacking with setTimeout).
+          }, 10);
+        }
+
+        // Whole lot of events and logic to have pop up stay visible between days for both mouse and touch users.
+        marker.on('click', function (e) {
+          // toggle active marker
+          activeProvince = activeProvince == site.province ? undefined : site.province;
+        });
         marker.on('mouseover', function (e) {
             this.openPopup();
         });
+
         marker.on('mouseout', function (e) {
-            this.closePopup();
+          activeProvince = undefined;
+          this.closePopup();
+        });
+        marker.on('popupclose', () => { // e.g.: closed by user manually
+          activeProvince = undefined;
         });
 
         marker.addTo(markersGroup);
@@ -91,7 +119,7 @@
       maxBoundsViscosity: 1.0,
       minZoom: 1.5,
       maxZoom: 12,
-      zoomControl: false,
+      zoomControl: false
     }).setView(mapCenter, 3);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
@@ -113,11 +141,18 @@
     const el = map.getContainer();
     const width = el.offsetWidth;
     const height = el.offsetHeight
-    const isOpen = width > 600 && height > 400;
 
+    const isLargeishScreen = width > 700 || height > 700;
+    if (isLargeishScreen) {
+      new L.Control.Zoom({ position: 'topright' }).addTo(map);
+    }
+
+    const isOpen = width > 600 && height > 400;
     const legend = createLegend('bottomright', isOpen);
 
     legend.addTo(map);
+
+    map.on('click', () => activeProvince = undefined);
   });
 
   // listen to changes on dayIdx
@@ -129,33 +164,11 @@
     <div id="map"></div>
   </div>
 
-  <h1 class="header title">Coronavirus</h1>
-  <h1 class="header day">{$day.format('MMM D, YYYY')}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+  <h1 class="header day">{$day.format('MMM D, YYYY')}</h1>
 </div>
 
 <style>
-  .container {
-    position: relative;
-    height: 100%;
-  }
-  .header {
-    position: absolute;
-    top: 0;
-    left: 1em;
-    z-index: 99;
-    text-align: center;
 
-    mix-blend-mode: difference
-  }
-  .title {
-    display: none;
-    color: #ff4800;
-  }
-  .day {
-    color: #e2ff00;
-    text-align: center;
-    width: 100%;
-  }
   .aspect-wrapper {
     position: relative;
     width: 100%;
@@ -163,11 +176,53 @@
     background: gold; /** <-- For the demo **/
   }
 
+  .container {
+    position: relative;
+    overflow-x: hidden;
+    min-height: 30vh;
+    height: 100%;
+  }
+  .day {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    margin: 0;
+    padding: 0;
+    z-index: 99;
+    width: 100%;
+    text-align: center;
+    mix-blend-mode: difference;
+    color: #e2ff00;
+  }
   #map {
+    z-index: 42;
+    /*width: 100%;*/
+    /*height: 100%;*/
     position: absolute;
     top: 0; bottom: 0; left: 0; right: 0;
-    z-index: 42;
   }
+
+  @media(max-width: 415px) {
+    .day {
+      text-align: left;
+      font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
+    }
+  }
+  @media(max-height: 415px) { /* duplicate logic of max-width query, svelte doesn't seem to support media query OR */
+    .day {
+      text-align: left;
+      font-size: 1rem;
+      width: auto; /* if we leave it at 100% it will get outside of the page bounds on the right on mobile */
+    }
+  }
+
+  /* Additional marker styling (on top of leaflet) */
+  :global(.virusmarker.first) {
+    animation: scalein 0.5s ease-out 1;
+  }
+
+  /* Legend panel styling */
   :global(.legend-panel) {
     border: solid 2px #777777;
     padding: 0.5rem 1rem;
@@ -178,16 +233,30 @@
     display: inline-block;
     margin: 0;
   }
-  :global(.legend-panel .inaccurate-note) {
-    max-width: 30ch;
-    text-align: center;
+  :global(.legend-panel .content) {
+    height: 100%;
   }
   :global(.legend-panel ul) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
     list-style: none;
     padding: 0;
+    margin: 0;
+  }
+  :global(.legend-panel li) {
+    display: inline-block;
+    flex: 1 1 50%;
+  }
+  :global(.legend-panel .count) {
+    display: inline-block;
+    min-width: 5ch;
+    text-align: right;
   }
   :global(.legend-panel .indent) {
     padding-left: 2em;
+    flex-basis: 100%;
   }
   :global(.legend-panel .swatch) {
     display: inline-block;
@@ -201,6 +270,9 @@
   }
   :global(.legend-panel.closed .content) {
     padding: 0.5rem 1rem;
+    display: none;
+  }
+  :global(.legend-panel.open .header) {
     display: none;
   }
   :global(.legend-panel .icon) {

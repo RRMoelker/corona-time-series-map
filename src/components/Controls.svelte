@@ -6,7 +6,7 @@
   import IconButton from '@smui/icon-button';
   // import Textfield from '@smui/textfield';
   import Slider from '@smui/slider';
-  import { day, dayIdx, numberOfDays, numberOfDays0 } from '../store';
+  import { dayIdx, numberOfDays, numberOfDays0 } from '../store';
 
   const timeStep = 500; // ms
   let loop = false;
@@ -55,9 +55,18 @@
       startTimer();
     }
   };
+  const play = () => {
+    if ($dayIdx == $numberOfDays0) {
+      toStart();
+    }
+    toggleTimer();
+  };
 
-  const reset = () => {
+  const toStart = () => {
     $dayIdx = 0;
+  };
+  const toEnd = () => {
+    $dayIdx = $numberOfDays0;
   };
 
   startTimer();
@@ -71,25 +80,20 @@
   {#if $numberOfDays > 0}
     <!--<Textfield bind:value={$dayIdx} label="Day index" type="number" on:change={stopTimer} min={0} max={$numberOfDays0}/>-->
 
+    <div class="day-slider">
+      <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
+    </div>
+
     <div class="direct-control"><!-- groups items to display on small screen-->
-      <div class="day-slider">
-        <Slider bind:value={$dayIdx} min={0} max={$numberOfDays0} step={1} discrete displayMarkers />
-      </div>
-
-      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>skip_previous</IconButton></div>
-      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>skip_next</IconButton></div>
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); toStart()}} disabled={$dayIdx == 0}>skip_previous</IconButton></div>
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayPrev()}}>navigate_before</IconButton></div>
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); dayNext()}}>navigate_next</IconButton></div>
+      <div class="skip-btn"><IconButton class="material-icons" on:click={() => {stopTimer(); toEnd()}} disabled={$dayIdx == $numberOfDays0}>skip_next</IconButton></div>
     </div>
 
-    <span class="day-label">{$day.format('MMM D, YYYY')}</span>
-
     <div class="button-wrapper">
-      <Button on:click={toggleTimer} variant="unelevated" color="secondary">
+      <Button on:click={play} variant="unelevated" color="secondary">
         <Icon class="material-icons">{ isRunning ? 'pause' : 'play_arrow' }</Icon><div class="play-reset-label"><Label>{ isRunning ? 'pause' : 'play' }</Label></div>
-      </Button>
-    </div>
-    <div class="button-wrapper">
-      <Button on:click={reset} disabled={$dayIdx == 0}  variant="unelevated" color="secondary">
-        <Icon class="material-icons">replay</Icon><div class="play-reset-label"><Label>restart</Label></div>
       </Button>
     </div>
 
@@ -112,25 +116,18 @@
 }
 .direct-control {
   display: flex;
-  width: 40%;
-  min-width: 300px;
 }
-
 .skip-btn {
-  flex: 0 0 auto;
   margin-top: -.5em; /* counteract margin inside Material ui button */
   margin-top: .5em;
   color: #138786;
 }
 .day-slider {
   flex: 1 1 auto;
-  padding-top: 10px;
-}
-
-.day-label {
-  margin: .6em .5em 1em;
-  min-width: 12ch;
-  text-align: center;
+  width: 40%;
+  min-width: 200px;
+  max-width: 50%;
+  margin-top: -3px;
 }
 
 .button-wrapper {
@@ -143,11 +140,10 @@
   color: gray;
   font-size: 0.5rem;
 }
+.loop-wrapper {
+  margin-top: -.5em;
+}
 @media(max-width: 415px) {
-  .day-label {
-    flex-basis: 100%; /* causes element to have it's own row */
-    margin-top: 0;
-  }
   .loop-wrapper {
     display: none;
   }

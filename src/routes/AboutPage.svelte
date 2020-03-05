@@ -7,8 +7,7 @@
 
 <main class="page-container">
   <p>
-    The goal of this app is to show Coronavirus spread over time.
-    To allow people to make a more educated risk assessment.
+    The goal of this app is to show the Coronavirus (COVID-19) spread over time so people can make a more educated risk assessment.
   </p>
 
   <p>
