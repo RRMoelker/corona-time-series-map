@@ -1,10 +1,7 @@
 const tryLogRoute = (url) => {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    'event': 'Pageview',
-    'pagePath': url,
-    'pageTitle': document.title
-  });
+  if (window.ga) {
+    window.ga('send', 'pageview');
+  }
 };
 
 export const logRouteChanges = () => {
