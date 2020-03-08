@@ -21,9 +21,14 @@
   const labelMinZoom = 4;
   let activeProvince = undefined; // Stores selected marker between days to show pop up
 
-  const China = [4, 30.787112, 106.347656]; // zoom, lat, lng
+  const China = [4, 30.789037, 109.380961]; // zoom, lat, lng
   const Europe = [4, 53.622345, 16.611328]; // zoom, lat, lng
-  const MiddleEast = [4, 49.928371, 17.617947]; // zoom, lat, lng
+  const MiddleEast = [4, 29.266158, 50.317198]; // zoom, lat, lng
+  const NAmerica = [4, 38.100823, -90.30506]; // zoom, lat, lng
+  const SAmerica = [3, -22.843383, -68.118069]; // zoom, lat, lng
+  const Australia = [4, -29.423834, 133.02397]; // zoom, lat, lng // Left bottom legend
+  const Afrika = [3, -3.598527, 17.65531]; // zoom, lat, lng
+  const World = [2, 6.488172, -14.949379]; // zoom, lat, lng // left bottom legend
 
   const logZoomPosition = () => {
     console.log(`zoom: ${map.getZoom()}, pos: ${map.getCenter()}`);
@@ -128,10 +133,10 @@
         if (showLabels) {
           const meters = 2 * radius;
 
-          if (meters >= 100 * 1000) {
+          if (meters >= 200 * 1000) {
             // only show label if enough space available on marker, TODO, use variables such as zoom level and character size in meters
 
-            const showDouble = meters >= 200 * 1000; // double line label
+            const showDouble = meters >= 450 * 1000; // double line label
 
             let className = 'virusmarker-label';
             if (showDouble) {
@@ -240,7 +245,8 @@
     }
 
     const isOpen = width > 600 && height > 400;
-    const legend = createLegend('bottomright', isOpen);
+    const legend = createLegend('bottomleft', isOpen);
+    // const legend = createLegend('bottomright', isOpen);
 
     legend.addTo(map);
 
@@ -271,6 +277,11 @@
     <Button on:click={() => setView(China)} variant="unelevated" color="secondary"><Label>China</Label></Button>
     <Button on:click={() => setView(Europe)} variant="unelevated" color="secondary"><Label>Europe</Label></Button>
     <Button on:click={() => setView(MiddleEast)} variant="unelevated" color="secondary"><Label>MiddleEast</Label></Button>
+    <Button on:click={() => setView(NAmerica)} variant="unelevated" color="secondary"><Label>NAmerica</Label></Button>
+    <Button on:click={() => setView(SAmerica)} variant="unelevated" color="secondary"><Label>SAmerica</Label></Button>
+    <Button on:click={() => setView(Australia)} variant="unelevated" color="secondary"><Label>Australia</Label></Button>
+    <Button on:click={() => setView(Afrika)} variant="unelevated" color="secondary"><Label>Afrika</Label></Button>
+    <Button on:click={() => setView(World)} variant="unelevated" color="secondary"><Label>World</Label></Button>
   </div>
 </div>
 
