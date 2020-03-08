@@ -6,10 +6,16 @@
   import { createLegend } from '../map/legendControl';
   import { computeCircleRadius } from '../map/calculations';
 
-  let markersGroup = undefined;
+  const markersGroup = L.layerGroup();
+  const labelsGroup = L.layerGroup();
+
   let map;
+  let prevZoomLevel;
+  let metersPerPixel;
 
   const mapCenter = [20, 110]; // China
+  const startZoom = 3;
+  const labelMinZoom = 4;
   let activeProvince = undefined; // Stores selected marker between days to show pop up
 
   const addLi = (ul, text) => {
@@ -39,11 +45,11 @@
 
     if (markersGroup) {
       const activeProvinceMem = activeProvince; // remember active province because pop up removal will delete value. No way around this hack as far as I can tell.
-      map.removeLayer(markersGroup);
+      markersGroup.eachLayer(layer => markersGroup.removeLayer(layer));
+      labelsGroup.eachLayer(layer => labelsGroup.removeLayer(layer));
       activeProvince = activeProvinceMem;
     }
 
-    markersGroup = L.layerGroup();
     for (const site of sites) {
       const count = site.count[dayIdx];
       const derivativeA = site.derivativeA[dayIdx];
@@ -76,7 +82,6 @@
           radius, // Radius of the circle in meters.
           className
         });
-
         marker.bindPopup(createPopupContent(site, count, derivativeA));
 
         if (site.province == activeProvince)  {
@@ -104,9 +109,46 @@
         });
 
         marker.addTo(markersGroup);
+
+        // const content = `${count}, ${Number(derivativeA).toFixed(1)}/d`;
+        // const text = L.tooltip({
+        //             permanent: true,
+        //             direction: 'center',
+        //             className: 'virusmarker-label'
+        //         })
+        //         .setContent(content)
+        //         .setLatLng(marker.getLatLng());
+        // const val = text.addTo(labelsGroup);
+        //
+        // const meters = 2 * radius;
+        // const pixels = meters / metersPerPixel
+        // const charCount = content.length;
+        // const fontSize = pixels / charCount;
+        // val.getElement().style.fontSize = `${fontSize}px`;
       }
     }
-    markersGroup.addTo(map)
+  };
+
+  const setTooltipVisible = level => {
+    if (level >= labelMinZoom) {
+      L.DomUtil.removeClass(map.getPane('tooltipPane'), 'hidden');
+    } else {
+      L.DomUtil.addClass(map.getPane('tooltipPane'), 'hidden');
+    }
+  };
+
+  const setZoomClass = level => {
+    if (prevZoomLevel) {
+      L.DomUtil.removeClass(map.getContainer(), `zoom-${prevZoomLevel}`);
+    }
+    L.DomUtil.addClass(map.getContainer(), `zoom-${level}`);
+  };
+
+  const onZoom = level => {
+    setTooltipVisible(level);
+    setZoomClass(level);
+    metersPerPixel = 40075016.686 * Math.abs(Math.cos(map.getCenter().lat * Math.PI/180)) / Math.pow(2, map.getZoom()+8)
+    prevZoomLevel = level;
   };
 
 	onMount(async () => {
@@ -120,7 +162,7 @@
       minZoom: 1.5,
       maxZoom: 12,
       zoomControl: false
-    }).setView(mapCenter, 3);
+    }).setView(mapCenter, startZoom);
 
     // const wikimediaLayer = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
     // 	attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
@@ -153,6 +195,12 @@
     legend.addTo(map);
 
     map.on('click', () => activeProvince = undefined);
+
+    markersGroup.addTo(map);
+    labelsGroup.addTo(map);
+
+    map.on('zoomend', () => onZoom(map.getZoom()) );
+    onZoom(map.getZoom());
   });
 
   // listen to changes on dayIdx
@@ -220,6 +268,16 @@
   /* Additional marker styling (on top of leaflet) */
   :global(.virusmarker.first) {
     animation: scalein 0.5s ease-out 1;
+  }
+
+  :global(.leaflet-container .hidden) {
+    display: none;
+  }
+  :global(.virusmarker-label) {
+    /* Disable default leaflet tooltip styling */
+    border: none;
+    background-color: initial;
+    box-shadow: none;
   }
 
   /* Legend panel styling */
