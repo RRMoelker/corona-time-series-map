@@ -39,10 +39,10 @@ export const createLegend = (position, isOpen) => {
       const color = spreadColor[key];
       let label = spreadLevelsHuman[key];
 
-      list += `<li><i class="swatch" style="background: ${color};"></i><span class="count">${label}</span> infections/day</li>`;
+      list += `<li><i class="swatch" style="background: ${color};"></i><span class="count">${label}</span> infections/day.</li>`;
     }
-    list += '<li class="indent"">Size: number of confirmed cases</li>';
-    list += '<li class="indent"">Marker position reflects region not precise location</li>';
+    list += '<li class="indent"">Size: number of confirmed cases.</li>';
+    list += '<li class="indent"">Marker position reflects region not precise location.</li>';
 
     let content = `<ul>${list}</ul>`;
     div.innerHTML += `<div class="content">${content}</div>`;

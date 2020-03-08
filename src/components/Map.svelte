@@ -1,4 +1,6 @@
 <script>
+  import Button from '@smui/button';
+  import {Label} from '@smui/common';
 	import { onMount } from 'svelte';
   import L from 'leaflet';
   import { spreadLevels, spreadColor } from '../levels';
@@ -14,10 +16,22 @@
   let metersPerPixel;
 
   const mapCenter = [20, 110]; // China
-  const startZoom = 3;
-  const showLabels = false;
+  const startZoom = 4.5;
+  const showLabels = true;
   const labelMinZoom = 4;
   let activeProvince = undefined; // Stores selected marker between days to show pop up
+
+  const China = [4, 30.787112, 106.347656]; // zoom, lat, lng
+  const Europe = [4, 53.622345, 16.611328]; // zoom, lat, lng
+  const MiddleEast = [4, 49.928371, 17.617947]; // zoom, lat, lng
+
+  const logZoomPosition = () => {
+    console.log(`zoom: ${map.getZoom()}, pos: ${map.getCenter()}`);
+  };
+
+  const setView = ([zoom, lat, lng]) => {
+    map.setView(L.latLng(lat, lng), zoom);
+  };
 
   const addLi = (ul, text) => {
     const li = document.createElement("li");
@@ -215,6 +229,9 @@
 
     map.on('zoomend', () => onZoom(map.getZoom()) );
     onZoom(map.getZoom());
+
+    map.on('zoomend', logZoomPosition);
+    map.on('moveend', logZoomPosition);
   });
 
   // listen to changes on dayIdx
@@ -227,10 +244,19 @@
   </div>
 
   <h1 class="header day">{$day.format('MMM D, YYYY')}</h1>
+
+  <div class="debug-buttons">
+    <Button on:click={() => setView(China)} variant="unelevated" color="secondary"><Label>China</Label></Button>
+    <Button on:click={() => setView(Europe)} variant="unelevated" color="secondary"><Label>Europe</Label></Button>
+    <Button on:click={() => setView(MiddleEast)} variant="unelevated" color="secondary"><Label>MiddleEast</Label></Button>
+  </div>
 </div>
 
 <style>
-
+  .debug-buttons {
+    position: absolute;
+    bottom: 0;
+  }
   .aspect-wrapper {
     position: relative;
     width: 100%;
@@ -311,6 +337,7 @@
     padding: 0.5rem 1rem;
     background-color: white;
     font-size: 1rem;
+    max-width: 30ch;
   }
   :global(.legend-panel h3) {
     display: inline-block;
