@@ -15,6 +15,7 @@
 
   const mapCenter = [20, 110]; // China
   const startZoom = 3;
+  const showLabels = false;
   const labelMinZoom = 4;
   let activeProvince = undefined; // Stores selected marker between days to show pop up
 
@@ -110,21 +111,34 @@
 
         marker.addTo(markersGroup);
 
-        // const content = `${count}, ${Number(derivativeA).toFixed(1)}/d`;
-        // const text = L.tooltip({
-        //             permanent: true,
-        //             direction: 'center',
-        //             className: 'virusmarker-label'
-        //         })
-        //         .setContent(content)
-        //         .setLatLng(marker.getLatLng());
-        // const val = text.addTo(labelsGroup);
-        //
-        // const meters = 2 * radius;
-        // const pixels = meters / metersPerPixel
-        // const charCount = content.length;
-        // const fontSize = pixels / charCount;
-        // val.getElement().style.fontSize = `${fontSize}px`;
+        if (showLabels) {
+          const countTxt = `${count}`;
+          const spreadtxt = `+${Number(derivativeA).toFixed(1)}`;
+          const content = `${countTxt}, ${spreadtxt}`;
+          const longest = countTxt.length > spreadtxt.length ? countTxt : spreadtxt;
+          const tooltip = L.tooltip({
+                      permanent: true,
+                      direction: 'center',
+                      className: 'virusmarker-label'
+                  })
+                  .setContent(longest) // This content is used to center, so taking the longest value!
+                  .setLatLng(marker.getLatLng());
+
+          const meters = 2 * radius;
+          if (meters >= 200 * 1000) {
+            // only show label if enough space available on marker, TODO, use variables such as zoom level and character size in meters
+            const pixels = meters / metersPerPixel;
+            const charCount = content.length;
+
+            const val = tooltip.addTo(labelsGroup);
+            const fontSize = pixels / charCount;
+            const el = val.getElement();
+            // el.style.fontSize = `${fontSize}px`;
+            el.innerHTML = `<span class="count">${countTxt}</span><span class="spread">${spreadtxt}</span>`;
+            // el.innerHTML = `${meters}`;
+          }
+        }
+
       }
     }
   };
@@ -266,6 +280,17 @@
     border: none;
     background-color: initial;
     box-shadow: none;
+  }
+  :global(.virusmarker-label) {
+     margin-top: -0.8em; /* Required for vertical alignment of two elements on top of each other */
+     text-align: center;
+     font-weight: bold;
+  }
+  :global(.virusmarker-label > span) {
+    display: block;
+  }
+  :global(.virusmarker-label .spread) {
+     font-weight: normal;
   }
 
   /* Legend panel styling */
