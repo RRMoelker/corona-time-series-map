@@ -12,10 +12,12 @@
   const labelsGroup = L.layerGroup();
 
   let map;
+  let legend;
   let prevZoomLevel;
   let metersPerPixel;
 
   const mapCenter = [20, 110]; // China
+  const showZoomControl = false;
   const startZoom = 4.5;
   const showLabels = true;
   const labelMinZoom = 4;
@@ -26,7 +28,7 @@
   const MiddleEast = [4, 29.266158, 50.317198]; // zoom, lat, lng
   const NAmerica = [4, 38.100823, -90.30506]; // zoom, lat, lng
   const SAmerica = [3, -22.843383, -68.118069]; // zoom, lat, lng
-  const Australia = [4, -29.423834, 133.02397]; // zoom, lat, lng // Left bottom legend
+  const Australia = [4, -29.343826, 132.494946]; // zoom, lat, lng // Left bottom legend
   const Afrika = [3, -3.598527, 17.65531]; // zoom, lat, lng
   const World = [2, 6.488172, -14.949379]; // zoom, lat, lng // left bottom legend
 
@@ -240,14 +242,12 @@
     const height = el.offsetHeight
 
     const isLargeishScreen = width > 700 || height > 700;
-    if (isLargeishScreen) {
+    if (showZoomControl && isLargeishScreen) {
       new L.Control.Zoom({ position: 'topright' }).addTo(map);
     }
 
     const isOpen = width > 600 && height > 400;
-    const legend = createLegend('bottomleft', isOpen);
-    // const legend = createLegend('bottomright', isOpen);
-
+    legend = createLegend('bottomright', isOpen);
     legend.addTo(map);
 
     map.on('click', () => activeProvince = undefined);
@@ -282,6 +282,8 @@
     <Button on:click={() => setView(Australia)} variant="unelevated" color="secondary"><Label>Australia</Label></Button>
     <Button on:click={() => setView(Afrika)} variant="unelevated" color="secondary"><Label>Afrika</Label></Button>
     <Button on:click={() => setView(World)} variant="unelevated" color="secondary"><Label>World</Label></Button>
+    <Button on:click={() => legend.setPosition('bottomleft')} variant="unelevated" color="secondary"><Label>Left</Label></Button>
+    <Button on:click={() => legend.setPosition('bottomright')} variant="unelevated" color="secondary"><Label>Right</Label></Button>
   </div>
 </div>
 
