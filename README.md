@@ -21,7 +21,7 @@ npm install
 Run server
 
 ```bash
-npm run dev
+npm start
 ```
 
 Navigate to [localhost:5000](http://localhost:5000).
