@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { dataUrl } from "../config";
+import { DATA_URL } from "../config";
 
 let cache = undefined;
 
@@ -54,7 +54,7 @@ const exponentialWeightedAverages = (list, exp) => {
  * @returns {Promise<any>}
  */
 export const loadCsv = () => {
-  const url = dataUrl;
+  const url = DATA_URL;
 
   const promise = new Promise((resolve, reject) => {
     if (cache) {
