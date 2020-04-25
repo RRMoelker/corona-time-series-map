@@ -4,7 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --dev -s",
+    "start": "npm run dev",
+    "start:dev": "sirv public --dev -s",
     "postinstall": "bin/fix-smui"
   },
   "devDependencies": {
