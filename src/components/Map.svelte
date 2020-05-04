@@ -372,7 +372,7 @@
   /* Legend panel styling */
   :global(.legend-panel) {
     border: solid 2px #777777;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem .5rem;
     background-color: white;
     font-size: 1rem;
     max-width: 30ch;
