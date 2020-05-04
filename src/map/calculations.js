@@ -1,10 +1,10 @@
 import { easeOutCirc } from "js-easing-functions";
 
-const minRadius = 5000;
-const maxRadius = 500000;
+export const minRadius = 5000;
+export const maxRadius = 5 * 1000 * 1000;
 const diffRadius = maxRadius - minRadius;
 
-const rangeMax = 50000; // max out radius at this count
+const rangeMax = 50*1000*1000; // max out radius at this count
 
 export const computeCircleRadius = count => {
   if (count > rangeMax) {
