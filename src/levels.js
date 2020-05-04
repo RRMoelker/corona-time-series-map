@@ -1,7 +1,7 @@
 export const spreadLevels = { // equal or less than x per day
   'stagnant': 0,
-  'low': 5,
-  'medium': 50,
+  'low': 50,
+  'medium': 500,
   'high': Number.MAX_SAFE_INTEGER,
 };
 
